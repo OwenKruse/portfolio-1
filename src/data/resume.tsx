@@ -124,12 +124,40 @@ export const DATA = {
   ],
   projects: [
     {
+      title: "Professionly.co",
+      href: "https://www.professionly.co",
+      dates: "2025",
+      active: true,
+      description:
+        "Co-founded a platform connecting students with job opportunities; led technical development, product roadmap, and user‑driven feature iteration.",
+      technologies: ["Next.js", "TypeScript"],
+      links: [
+        { type: "Website", href: "https://www.professionly.co", icon: <Icons.globe className="size-3" /> },
+      ],
+      image: "/professionly.png",
+      video: "",
+    },
+    {
+      title: "Fiscus Trade",
+      href: "https://trade.fiscusfinancial.pro",
+      dates: "2025",
+      active: true,
+      description:
+        "Realtime finacial research platform, market sentiment analsis, and stock trading. integrating the Alpaca API for secure stock trading and displaying user positions and transactions.",
+      technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Alpaca", "PostgreSQL"],
+      links: [
+        { type: "Website", href: "https://trade.fiscusfinancial.pro", icon: <Icons.globe className="size-3" /> },
+      ],
+      image: "/trade/chart.png",
+      video: "",
+    },
+    {
       title: "Fiscus Financial",
       href: "https://www.fiscusfinancial.pro",
       dates: "2025",
       active: true,
       description:
-        "Full‑stack finance tracker and budget planner integrating the Plaid API to securely fetch financial data. Focused on data accuracy, secure API integration, and an intuitive UX to help users analyze spending and make data‑driven decisions.",
+        "Building a platform of finacial tools for the average person to manage their money and investments.",
       technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Plaid", "PostgreSQL"],
       links: [
         { type: "Website", href: "https://www.fiscusfinancial.pro", icon: <Icons.globe className="size-3" /> },
@@ -151,34 +179,7 @@ export const DATA = {
       image: "/wallet.png",
       video: "",
     },
-    {
-      title: "Fiscus Trade",
-      href: "https://trade.fiscusfinancial.pro",
-      dates: "2025",
-      active: true,
-      description:
-        "Full‑stack trading platform for Fiscus Financial, integrating the Alpaca API for secure stock trading and displaying user positions and transactions.",
-      technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Alpaca", "PostgreSQL"],
-      links: [
-        { type: "Website", href: "https://trade.fiscusfinancial.pro", icon: <Icons.globe className="size-3" /> },
-      ],
-      image: "/trade/chart.png",
-      video: "",
-    },
-    {
-      title: "Professionly.co",
-      href: "https://www.professionly.co",
-      dates: "2025",
-      active: true,
-      description:
-        "Co-founded a platform connecting students with job opportunities; led technical development, product roadmap, and user‑driven feature iteration.",
-      technologies: ["Next.js", "TypeScript"],
-      links: [
-        { type: "Website", href: "https://www.professionly.co", icon: <Icons.globe className="size-3" /> },
-      ],
-      image: "/professionly.png",
-      video: "",
-    },
+
     {
       title: "ZestTV",
       href: "https://www.zesttv.live",
