@@ -166,7 +166,7 @@ export const DATA = {
       links: [
         { type: "Website", href: "https://wallet.fiscusfinancial.pro", icon: <Icons.globe className="size-3" /> },
       ],
-      image: "/wallet.png",
+      image: "/Wallet.png",
       video: "",
     },
     {
@@ -196,6 +196,19 @@ export const DATA = {
     //   image: "/zesttv.png",
     //   video: "",
     // },
+    {
+      title: "Lume Tide Swim",
+      href: "https://www.lumetideswim.com",
+      dates: "2025",
+      active: true,
+      description: " Designed and developed a website for Lume Tide Swim, a local swim-wear brand. Implemented responsive layouts, performance improvements, and search-friendly structure.",
+      technologies: ["Next.js", "TypeScript", "Tailwind CSS"],
+      links: [
+        { type: "Website", href: "https://www.lumetideswim.com", icon: <Icons.globe className="size-3" /> },
+      ],
+      image: "/lume-tide-swim.png",
+      video: "",
+    },
     {
       title: "CAAS",
       href: "https://www.caascmc.cc",
