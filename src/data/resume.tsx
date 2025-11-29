@@ -26,7 +26,7 @@ export const DATA = {
   ],
   navbar: [
     { href: "/", icon: HomeIcon, label: "Home" },
-    { href: "https://www.linkedin.com/in/owen-kruse-844ba4263/", icon: NotebookIcon, label: "LinkedIn" },
+    { href: "https://www.linkedin.com/in/owen-kruse-844ba4263/", icon: Icons.linkedin, label: "LinkedIn" },
   ],
   contact: {
     email: "kruseo@wwu.edu",
