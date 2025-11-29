@@ -11,7 +11,7 @@ export const DATA = {
     "Computer Science student and software engineer building practical, user-focused projects.",
   summary:
     "CS student at Western Washington University (2022–Present). Recent Software Engineer Intern at Cita Marketplace. Built projects like Fiscus Financial and ZestTV, with experience across full‑stack web development, API integrations, and deploying to cloud platforms.",
-  avatarUrl: "/me.jpg",
+  avatarUrl: "/me.JPG",
   skills: [
     "TypeScript",
     "Next.js",
@@ -92,17 +92,7 @@ export const DATA = {
       description:
         "Improved inventory workflows and purchasing coordination through data-driven tracking and process refinements, reducing stock discrepancies and improving order accuracy. Collaborated with cross-functional teams and vendors to align inventory levels with demand and supported point-of-sale and customer interactions, strengthening communication and problem-solving skills.",
     },
-    {
-      company: "Vashon Build",
-      href: "#",
-      badges: [],
-      title: "Website Developer",
-      logoUrl: "/vashon-build.png",
-      start: "January 2023",
-      end: "February 2023",
-      description:
-        "Led design, migration, and optimization of the company website to better reflect brand and improve user engagement. Implemented responsive layouts, performance improvements, and search-friendly structure; collaborated with stakeholders to gather requirements and deliver a tailored web experience that showcased products and services.",
-    },
+ 
   ],
   education: [
     {
@@ -134,7 +124,7 @@ export const DATA = {
       links: [
         { type: "Website", href: "https://www.professionly.co", icon: <Icons.globe className="size-3" /> },
       ],
-      image: "/professionly.png",
+      image: "/Professionly.png",
       video: "",
     },
     {
@@ -179,21 +169,33 @@ export const DATA = {
       image: "/wallet.png",
       video: "",
     },
-
     {
-      title: "ZestTV",
-      href: "https://www.zesttv.live",
-      dates: "2025",
+      title: "Vashon Build",
+      href: "https://www.vashonbuild.com",
+      dates: "2023-2025",
       active: true,
-      description:
-        "Scalable movie and TV streaming platform with live sports, trailers, and reviews. Emphasized performance, media playback reliability, and usability.",
+      description: " Designed and developed a website for Vashon Build, a local homebuilder. Implemented responsive layouts, performance improvements, and search-friendly structure.",
       technologies: ["Next.js", "TypeScript", "Tailwind CSS"],
       links: [
-        { type: "Website", href: "https://www.zesttv.live", icon: <Icons.globe className="size-3" /> },
+        { type: "Website", href: "https://www.vashonbuild.com", icon: <Icons.globe className="size-3" /> },
       ],
-      image: "/zesttv.png",
+      image: "/vashon-build/img.png",
       video: "",
     },
+    // {
+    //   title: "ZestTV",
+    //   href: "https://www.zesttv.live",
+    //   dates: "2025",
+    //   active: true,
+    //   description:
+    //     "Scalable movie and TV streaming platform with live sports, trailers, and reviews. Emphasized performance, media playback reliability, and usability.",
+    //   technologies: ["Next.js", "TypeScript", "Tailwind CSS"],
+    //   links: [
+    //     { type: "Website", href: "https://www.zesttv.live", icon: <Icons.globe className="size-3" /> },
+    //   ],
+    //   image: "/zesttv.png",
+    //   video: "",
+    // },
     {
       title: "CAAS",
       href: "https://www.caascmc.cc",
