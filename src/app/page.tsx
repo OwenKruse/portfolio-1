@@ -146,6 +146,7 @@ export default function Page() {
                   image={project.image}
                   video={project.video}
                   links={project.links}
+                  underConstruction={(project as any).underConstruction}
                 />
               </BlurFade>
             ))}

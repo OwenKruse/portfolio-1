@@ -148,6 +148,7 @@ export const DATA = {
       active: true,
       description:
         "Building a platform of finacial tools for the average person to manage their money and investments.",
+      underConstruction: true,
       technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Plaid", "PostgreSQL"],
       links: [
         { type: "Website", href: "https://www.fiscusfinancial.pro", icon: <Icons.globe className="size-3" /> },

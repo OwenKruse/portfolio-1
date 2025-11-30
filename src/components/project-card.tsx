@@ -26,6 +26,7 @@ interface Props {
     href: string;
   }[];
   className?: string;
+  underConstruction?: boolean;
 }
 
 export function ProjectCard({
@@ -39,6 +40,7 @@ export function ProjectCard({
   video,
   links,
   className,
+  underConstruction,
 }: Props) {
   return (
     <Card
@@ -48,8 +50,13 @@ export function ProjectCard({
     >
       <Link
         href={href || "#"}
-        className={cn("block cursor-pointer", className)}
+        className={cn("block cursor-pointer relative", className)}
       >
+        {underConstruction && (
+          <div className="absolute top-0 right-0 z-10 bg-yellow-500 text-white text-[10px] px-2 py-1 font-bold rounded-bl-lg shadow-md">
+            Under Construction
+          </div>
+        )}
         {video && (
           <video
             src={video}
