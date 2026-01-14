@@ -183,20 +183,20 @@ export const DATA = {
       image: "/vashon-build/img.png",
       video: "",
     },
-    // {
-    //   title: "ZestTV",
-    //   href: "https://www.zesttv.live",
-    //   dates: "2025",
-    //   active: true,
-    //   description:
-    //     "Scalable movie and TV streaming platform with live sports, trailers, and reviews. Emphasized performance, media playback reliability, and usability.",
-    //   technologies: ["Next.js", "TypeScript", "Tailwind CSS"],
-    //   links: [
-    //     { type: "Website", href: "https://www.zesttv.live", icon: <Icons.globe className="size-3" /> },
-    //   ],
-    //   image: "/zesttv.png",
-    //   video: "",
-    // },
+    {
+      title: "ZestTV",
+      href: "https://www.zesttv.live",
+      dates: "2025",
+      active: true,
+      description:
+        "Scalable movie and TV streaming platform with live sports, trailers, and reviews. Emphasized performance, media playback reliability, and usability.",
+      technologies: ["Next.js", "TypeScript", "Tailwind CSS"],
+      links: [
+        { type: "Website", href: "https://www.zesttv.live", icon: <Icons.globe className="size-3" /> },
+      ],
+      image: "/zesstv.png",
+      video: "",
+    },
     {
       title: "Lume Tide Swim",
       href: "https://www.lumetideswim.com",
