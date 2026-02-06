@@ -114,6 +114,20 @@ export const DATA = {
   ],
   projects: [
     {
+      title: "ImplyX",
+      href: "https://www.implyx.com",
+      dates: "2026",
+      active: true,
+      description:
+        "THE PROTOCOL FOR PREDICTION MARKETS. ImplyX is a platform providing professional trading tools for prediction markets.",
+      technologies: ["Next.js", "TypeScript"],
+      links: [
+        { type: "Website", href: "https://www.implyx.com", icon: <Icons.globe className="size-3" /> },
+      ],
+      image: "/implyx.png",
+      video: "",
+    },
+    {
       title: "Professionly.co",
       href: "https://www.professionly.co",
       dates: "2025",
