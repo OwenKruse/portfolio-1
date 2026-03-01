@@ -171,7 +171,7 @@ export function TransactionCard({
           {!hasSigned && (
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
               <span className="text-2xl font-serif text-zinc-800 dark:text-zinc-200 opacity-80 mt-4">Sign here</span>
-              <div className="w-48 h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-2" />
+              <div className="w-48 h-[1px] bg-zinc-200 dark:bg-white mt-2" />
             </div>
           )}
 

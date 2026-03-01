@@ -82,7 +82,7 @@ const boardVariants = cva(
 );
 
 const columnVariants = cva(
-  "relative flex flex-1 flex-col gap-4 rounded-2xl border border-border/70 bg-background/80 p-4 shadow-sm transition-colors duration-200",
+  "relative flex flex-1 flex-col gap-4 rounded-2xl border border-border/70 p-4 shadow-sm transition-colors duration-200",
   {
     variants: {
       variant: {
@@ -104,7 +104,7 @@ const columnVariants = cva(
 );
 
 const cardVariants = cva(
-  "group rounded-xl border border-border/60 bg-background p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md",
+  "group rounded-xl border border-border/60 p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md",
   {
     variants: {
       variant: {
@@ -260,6 +260,7 @@ export function KanbanBoard({
     }
     return (
       <motion.div
+        key={`${columnId}-drop-${index}`}
         layout
         className="h-2 rounded-full bg-gradient-to-r from-primary/10 via-primary/60 to-primary/10"
         initial={{ opacity: 0, scaleX: 0.6 }}
@@ -376,10 +377,10 @@ export function KanbanBoard({
                       draggable
                       whileHover={{ y: -2 }}
                       transition={{ type: "spring", stiffness: 500, damping: 35 }}
-                      onDragStart={(event) => {
+                      onDragStart={(e: any) => {
                         setDraggingCard(card.id);
-                        event.dataTransfer.setData("text/plain", card.id);
-                        event.dataTransfer.effectAllowed = "move";
+                        e.dataTransfer.setData("text/plain", card.id);
+                        e.dataTransfer.effectAllowed = "move";
                       }}
                       onDragEnd={() => {
                         setDraggingCard(null);

@@ -9,6 +9,9 @@ import {
   ListChecks,
   LayoutGrid,
   Highlighter,
+  CreditCard,
+  Activity,
+  MessageSquareQuote,
 } from "lucide-react"
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -18,6 +21,9 @@ import { TextHighlight } from "@/components/text-highlight"
 import { KeyboardKey } from "@/components/keyboard-key"
 import { TaskCard } from "@/components/task-card"
 import { KanbanBoard } from "@/components/kanban-board"
+import { PricingCard } from "@/components/pricing-card"
+import { ActivityFeed } from "@/components/activity-feed"
+import { TestimonialCard } from "@/components/testimonial-card"
 import type { TaskItem } from "@/components/task-card"
 import type { KanbanBoardData } from "@/components/kanban-board"
 
@@ -64,7 +70,7 @@ const taskPreviewItems: TaskItem[] = [
     title: "QA checkout flow",
     description: "Test on mobile breakpoints.",
     status: "pending",
-    badge: { text: "QA", tone: "slate" },
+    badge: { text: "QA", tone: "zinc" },
     meta: "Thu",
     metaTone: "default",
     assignee: { name: "Jordan" },
@@ -167,6 +173,85 @@ const components = [
           className="border-0 bg-transparent p-0"
           columnClassName="min-w-[13rem] max-w-[15rem]"
         />
+      </div>
+    ),
+  },
+  {
+    title: "Pricing Card",
+    description: "Premium billing or tier section block with scaling and gradient hover effects.",
+    href: "/ui/pricing-card",
+    icon: CreditCard,
+    color: "bg-blue-500/10 text-blue-500",
+    preview: (
+      <div className="flex justify-center rounded-2xl bg-muted/40 p-6 overflow-hidden">
+        <div className="scale-[0.80] origin-top w-full max-w-[320px]">
+          <PricingCard
+            title="Pro"
+            price="$29"
+            description="Everything to scale."
+            features={[
+              { name: "Unlimited projects", included: true },
+              { name: "Advanced analytics", included: true }
+            ]}
+            isPopular
+          />
+        </div>
+      </div>
+    ),
+  },
+  {
+    title: "Activity Feed",
+    description: "Timeline/log block to render user actions like commits or deploys.",
+    href: "/ui/activity-feed",
+    icon: Activity,
+    color: "bg-amber-500/10 text-amber-500",
+    preview: (
+      <div className="flex justify-center rounded-2xl bg-muted/40 p-6 overflow-hidden">
+        <div className="scale-[0.80] origin-top w-full">
+          <ActivityFeed 
+            title="Notifications" 
+            activities={[
+              {
+                id: "1",
+                type: "commit",
+                user: { name: "Alice" },
+                content: "pushed to main",
+                timestamp: "Just now",
+              },
+              {
+                id: "2",
+                type: "comment",
+                user: { name: "Bob" },
+                content: "Looks great!",
+                timestamp: "2h ago",
+              }
+            ]} 
+          />
+        </div>
+      </div>
+    ),
+  },
+  {
+    title: "Testimonial Card",
+    description: "Elegant review card with glass aesthetics and hover gestures.",
+    href: "/ui/testimonial-card",
+    icon: MessageSquareQuote,
+    color: "bg-pink-500/10 text-pink-500",
+    preview: (
+      <div className="flex justify-center rounded-2xl bg-muted/40 p-6 overflow-hidden">
+        <div className="scale-[0.80] origin-top w-full max-w-[400px]">
+          <TestimonialCard
+            testimonial={{
+              id: "1",
+              content: "Beautifully crafted UI components.",
+              author: {
+                name: "Sarah",
+                role: "Designer",
+                company: "Acme",
+              }
+            }}
+          />
+        </div>
       </div>
     ),
   },

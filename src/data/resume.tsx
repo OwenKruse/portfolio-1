@@ -114,6 +114,20 @@ export const DATA = {
   ],
   projects: [
     {
+      title: "Preso AI",
+      href: "https://www.preso.ink",
+      dates: "2026",
+      active: true,
+      description:
+        "Preso AI is a platform that helps you create presentations with AI.",
+      technologies: ["Next.js", "TypeScript"],
+      links: [
+        { type: "Website", href: "https://www.preso.ink", icon: <Icons.globe className="size-3" /> },
+      ],
+      image: "/preso.png",
+      video: "",
+    },
+    {
       title: "ImplyX",
       href: "https://www.implyx.com",
       dates: "2026",
