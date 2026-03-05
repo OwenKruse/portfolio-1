@@ -170,21 +170,6 @@ export const DATA = {
       video: "",
     },
     {
-      title: "Fiscus Financial",
-      href: "https://www.fiscusfinancial.pro",
-      dates: "2025",
-      active: true,
-      description:
-        "Building a platform of finacial tools for the average person to manage their money and investments.",
-      underConstruction: true,
-      technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Plaid", "PostgreSQL"],
-      links: [
-        { type: "Website", href: "https://www.fiscusfinancial.pro", icon: <Icons.globe className="size-3" /> },
-      ],
-      image: "/fiscus-financial.png",
-      video: "",
-    },
-    {
       title: "Fiscus Wallet",
       href: "https://wallet.fiscusfinancial.pro",
       dates: "2025 - Present",
