@@ -155,34 +155,34 @@ export const DATA = {
       image: "/Professionly.png",
       video: "",
     },
-    {
-      title: "Fiscus Trade",
-      href: "https://trade.fiscusfinancial.pro",
-      dates: "2025",
-      active: true,
-      description:
-        "Realtime finacial research platform, market sentiment analsis, and stock trading. integrating the Alpaca API for secure stock trading and displaying user positions and transactions.",
-      technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Alpaca", "PostgreSQL"],
-      links: [
-        { type: "Website", href: "https://trade.fiscusfinancial.pro", icon: <Icons.globe className="size-3" /> },
-      ],
-      image: "/trade/chart.png",
-      video: "",
-    },
-    {
-      title: "Fiscus Wallet",
-      href: "https://wallet.fiscusfinancial.pro",
-      dates: "2025 - Present",
-      active: true,
-      description:
-        "Full‑stack wallet application for Fiscus Financial, integrating Plaid API for secure financial data access and displaying user balances and transactions.",
-      technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Plaid", "PostgreSQL"],
-      links: [
-        { type: "Website", href: "https://wallet.fiscusfinancial.pro", icon: <Icons.globe className="size-3" /> },
-      ],
-      image: "/Wallet.png",
-      video: "",
-    },
+    // {
+    //   title: "Fiscus Trade",
+    //   href: "https://trade.fiscusfinancial.pro",
+    //   dates: "2025",
+    //   active: true,
+    //   description:
+    //     "Realtime finacial research platform, market sentiment analsis, and stock trading. integrating the Alpaca API for secure stock trading and displaying user positions and transactions.",
+    //   technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Alpaca", "PostgreSQL"],
+    //   links: [
+    //     { type: "Website", href: "https://trade.fiscusfinancial.pro", icon: <Icons.globe className="size-3" /> },
+    //   ],
+    //   image: "/trade/chart.png",
+    //   video: "",
+    // },
+    // {
+    //   title: "Fiscus Wallet",
+    //   href: "https://wallet.fiscusfinancial.pro",
+    //   dates: "2025 - Present",
+    //   active: true,
+    //   description:
+    //     "Full‑stack wallet application for Fiscus Financial, integrating Plaid API for secure financial data access and displaying user balances and transactions.",
+    //   technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Plaid", "PostgreSQL"],
+    //   links: [
+    //     { type: "Website", href: "https://wallet.fiscusfinancial.pro", icon: <Icons.globe className="size-3" /> },
+    //   ],
+    //   image: "/Wallet.png",
+    //   video: "",
+    // },
     {
       title: "Vashon Build",
       href: "https://www.vashonbuild.com",
