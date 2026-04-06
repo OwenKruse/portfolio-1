@@ -72,11 +72,11 @@ export const DATA = {
   work: [
     {
       company: "Handshake AI",
-      href: "#",
+      href: "https://www.joinhandshake.com",
       badges: [],
       title: "AI/ML Training Intern",
       logoUrl: "/handshake.svg",
-      start: "2025",
+      start: "October 2025",
       end: "Present",
       description:
         "Supported training and evaluation workflows for machine learning systems used across Handshake AI products, improving model quality and reliability. Developed and refined data pipeline processes to prepare, structure, and validate training data for AI/ML applications. Contributed to experimentation and model assessment efforts by analyzing outputs, identifying performance gaps, and helping improve system effectiveness.",
