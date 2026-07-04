@@ -195,6 +195,20 @@ export const DATA = {
     //   video: "",
     // },
     {
+      title: "Parkhill Peach Boys",
+      href: "https://www.parkhillpeachboys.com/",
+      dates: "2025",
+      active: true,
+      description:
+        "Designed and developed the full website and online ordering system for Parkhill Peach Boys, including Square payment integration for secure checkout and an automated email reminder system for order updates and follow-ups.",
+      technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Square API"],
+      links: [
+        { type: "Website", href: "https://www.parkhillpeachboys.com/", icon: <Icons.globe className="size-3" /> },
+      ],
+      image: "/phpb.png",
+      video: "",
+    },
+    {
       title: "Vashon Build",
       href: "https://www.vashonbuild.com",
       dates: "2023-2025",
