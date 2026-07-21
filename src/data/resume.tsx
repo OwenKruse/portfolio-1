@@ -125,6 +125,20 @@ export const DATA = {
   ],
   projects: [
     {
+      title: "BookWave Audio",
+      href: "https://www.bookwaveaudio.com",
+      dates: "2026",
+      active: true,
+      description:
+        "AI audiobook platform that turns books, manuscripts, PDFs, and EPUBs into expressive, chapter-structured audio with natural voices in 70+ languages.",
+      technologies: ["Next.js", "TypeScript", "Tailwind CSS", "AI Audio"],
+      links: [
+        { type: "Website", href: "https://www.bookwaveaudio.com", icon: <Icons.globe className="size-3" /> },
+      ],
+      image: "/bookwave-audio.png",
+      video: "",
+    },
+    {
       title: "Preso AI",
       href: "https://www.preso.ink",
       dates: "2026",
@@ -150,6 +164,20 @@ export const DATA = {
         { type: "Website", href: "https://www.implyx.com", icon: <Icons.globe className="size-3" /> },
       ],
       image: "/implyx.png",
+      video: "",
+    },
+    {
+      title: "Parkhill Peach Boys",
+      href: "https://www.parkhillpeachboys.com/",
+      dates: "2026",
+      active: true,
+      description:
+        "Designed and developed the full website and online ordering system for Parkhill Peach Boys, including Square payment integration for secure checkout and an automated email reminder system for order updates and follow-ups.",
+      technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Square API"],
+      links: [
+        { type: "Website", href: "https://www.parkhillpeachboys.com/", icon: <Icons.globe className="size-3" /> },
+      ],
+      image: "/phpb.png",
       video: "",
     },
     {
@@ -194,20 +222,6 @@ export const DATA = {
     //   image: "/Wallet.png",
     //   video: "",
     // },
-    {
-      title: "Parkhill Peach Boys",
-      href: "https://www.parkhillpeachboys.com/",
-      dates: "2025",
-      active: true,
-      description:
-        "Designed and developed the full website and online ordering system for Parkhill Peach Boys, including Square payment integration for secure checkout and an automated email reminder system for order updates and follow-ups.",
-      technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Square API"],
-      links: [
-        { type: "Website", href: "https://www.parkhillpeachboys.com/", icon: <Icons.globe className="size-3" /> },
-      ],
-      image: "/phpb.png",
-      video: "",
-    },
     {
       title: "Vashon Build",
       href: "https://www.vashonbuild.com",
