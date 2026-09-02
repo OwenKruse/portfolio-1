@@ -66,14 +66,7 @@ export default function Page() {
           className="relative -mx-5 min-h-[520px] border-t border-border sm:-mx-8 lg:mx-0 lg:min-h-0 lg:border-l lg:border-t-0"
         >
           <div className="absolute inset-0 bg-[#3157f6]" />
-          <Image
-            src={DATA.avatarUrl}
-            alt={`Portrait of ${DATA.name}`}
-            fill
-            priority
-            sizes="(min-width: 1024px) 42vw, 100vw"
-            className="object-cover object-[center_34%] mix-blend-luminosity"
-          />
+        
           <div className="absolute inset-0 bg-gradient-to-t from-[#142154]/75 via-transparent to-transparent" />
           <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-5 p-6 text-white sm:p-8">
             <div>

@@ -129,12 +129,12 @@ export const DATA = {
       href: "https://www.modelgateway.co",
       dates: "2026",
       active: true,
-      description: "Explore Model Gateway.",
+      description: "ModelGateway is an AI token marketplace and AI inference API. Compare live model prices, route requests to healthy providers, and sell unused capacity from one platform.",
       technologies: ["Website"],
       links: [
         { type: "Website", href: "https://www.modelgateway.co", icon: <Icons.globe className="size-3" /> },
       ],
-      image: "",
+      image: "/model-gateway.png",
       video: "",
     },
     {
