@@ -61,25 +61,7 @@ export default function Page() {
           </BlurFade>
         </div>
 
-        <BlurFade
-          delay={BLUR_FADE_DELAY * 2}
-          className="relative -mx-5 min-h-[520px] border-t border-border sm:-mx-8 lg:mx-0 lg:min-h-0 lg:border-l lg:border-t-0"
-        >
-          <div className="absolute inset-0 bg-[#3157f6]" />
-        
-          <div className="absolute inset-0 bg-gradient-to-t from-[#142154]/75 via-transparent to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-5 p-6 text-white sm:p-8">
-            <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/65">
-                Based in
-              </p>
-              <p className="mt-1 text-sm">{DATA.location}</p>
-            </div>
-            <span className="font-serif text-6xl leading-none text-white/25">
-              OK
-            </span>
-          </div>
-        </BlurFade>
+       
       </section>
 
       <section
