@@ -19,12 +19,26 @@ const config = {
   		}
   	},
   	extend: {
-  		fontFamily: {
-  			sans: [
-  				'var(--font-sans)',
+		fontFamily: {
+			sans: [
+				'var(--font-sans)',
                     ...defaultTheme.fontFamily.sans
-                ]
-  		},
+                ],
+			serif: [
+				'Georgia',
+				'Cambria',
+				'"Times New Roman"',
+				'serif'
+			],
+			mono: [
+				'ui-monospace',
+				'SFMono-Regular',
+				'Menlo',
+				'Monaco',
+				'Consolas',
+				'monospace'
+			]
+		},
   		colors: {
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',

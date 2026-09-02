@@ -125,6 +125,19 @@ export const DATA = {
   ],
   projects: [
     {
+      title: "Model Gateway",
+      href: "https://www.modelgateway.co",
+      dates: "2026",
+      active: true,
+      description: "Explore Model Gateway.",
+      technologies: ["Website"],
+      links: [
+        { type: "Website", href: "https://www.modelgateway.co", icon: <Icons.globe className="size-3" /> },
+      ],
+      image: "",
+      video: "",
+    },
+    {
       title: "BookWave Audio",
       href: "https://www.bookwaveaudio.com",
       dates: "2026",

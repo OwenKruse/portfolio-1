@@ -2,10 +2,10 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardHeader } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
-import { ChevronRightIcon } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowUpRight, Plus } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -19,6 +19,7 @@ interface ResumeCardProps {
   period: string;
   description?: string;
 }
+
 export const ResumeCard = ({
   logoUrl,
   altText,
@@ -31,80 +32,99 @@ export const ResumeCard = ({
 }: ResumeCardProps) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    if (description) {
-      e.preventDefault();
-      setIsExpanded(!isExpanded);
-    }
-  };
-
   return (
-    <Link
-      href={href || "#"}
-      className="block cursor-pointer"
-      onClick={handleClick}
-    >
-      <Card className="flex">
-        <div className="flex-none">
-          <Avatar className="border size-12 m-auto bg-muted-background dark:bg-foreground">
-            <AvatarImage
-              src={logoUrl}
-              alt={altText}
-              className="object-contain"
-            />
-            <AvatarFallback>{altText[0]}</AvatarFallback>
-          </Avatar>
-        </div>
-        <div className="flex-grow ml-4 items-center flex-col group">
-          <CardHeader>
-            <div className="flex items-center justify-between gap-x-2 text-base">
-              <h3 className="inline-flex items-center justify-center font-semibold leading-none text-xs sm:text-sm">
-                {title}
-                {badges && (
-                  <span className="inline-flex gap-x-1">
-                    {badges.map((badge, index) => (
-                      <Badge
-                        variant="secondary"
-                        className="align-middle text-xs"
-                        key={index}
-                      >
-                        {badge}
-                      </Badge>
-                    ))}
-                  </span>
-                )}
-                <ChevronRightIcon
-                  className={cn(
-                    "size-4 translate-x-0 transform opacity-0 transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:opacity-100",
-                    isExpanded ? "rotate-90" : "rotate-0"
-                  )}
-                />
-              </h3>
-              <div className="text-xs sm:text-sm tabular-nums text-muted-foreground text-right">
-                {period}
-              </div>
-            </div>
-            {subtitle && <div className="font-sans text-xs">{subtitle}</div>}
-          </CardHeader>
-          {description && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{
-                opacity: isExpanded ? 1 : 0,
+    <Card className="group rounded-none border-0 border-b border-border bg-transparent py-6">
+      <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-4 sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:gap-5">
+        <Avatar className="size-11 rounded-none border border-border bg-white p-1.5">
+          <AvatarImage
+            src={logoUrl}
+            alt={altText}
+            className="object-contain"
+          />
+          <AvatarFallback className="rounded-none">{altText[0]}</AvatarFallback>
+        </Avatar>
 
-                height: isExpanded ? "auto" : 0,
-              }}
-              transition={{
-                duration: 0.7,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className="mt-2 text-xs sm:text-sm"
-            >
-              {description}
-            </motion.div>
-          )}
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <h4 className="text-sm font-medium leading-5">{title}</h4>
+            {badges?.map((badge) => (
+              <Badge
+                variant="secondary"
+                className="rounded-none px-1.5 py-0 font-mono text-[9px] font-normal"
+                key={badge}
+              >
+                {badge}
+              </Badge>
+            ))}
+          </div>
+          {subtitle ? (
+            <p className="mt-1 text-xs leading-5 text-muted-foreground">
+              {subtitle}
+            </p>
+          ) : null}
         </div>
-      </Card>
-    </Link>
+
+        <div className="col-start-2 flex items-center justify-between gap-4 sm:col-start-3 sm:row-start-1 sm:justify-end">
+          <span className="font-mono text-[9px] uppercase leading-4 tracking-[0.08em] text-muted-foreground sm:max-w-36 sm:text-right">
+            {period}
+          </span>
+          {description ? (
+            <button
+              type="button"
+              aria-expanded={isExpanded}
+              aria-label={`${isExpanded ? "Hide" : "Show"} details for ${title}`}
+              onClick={() => setIsExpanded((value) => !value)}
+              className="grid size-8 shrink-0 place-items-center border border-border transition-colors hover:bg-foreground hover:text-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <Plus
+                className={cn(
+                  "size-3.5 transition-transform duration-200",
+                  isExpanded && "rotate-45",
+                )}
+              />
+            </button>
+          ) : href ? (
+            <Link
+              href={href}
+              target={href.startsWith("http") ? "_blank" : undefined}
+              rel={href.startsWith("http") ? "noreferrer" : undefined}
+              aria-label={`Visit ${title}`}
+              className="grid size-8 shrink-0 place-items-center border border-border transition-colors hover:bg-foreground hover:text-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <ArrowUpRight className="size-3.5" />
+            </Link>
+          ) : null}
+        </div>
+      </div>
+
+      <AnimatePresence initial={false}>
+        {description && isExpanded ? (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="grid gap-4 pt-5 sm:grid-cols-[minmax(0,1fr)_auto] sm:pl-16">
+              <p className="max-w-2xl text-sm leading-7 text-muted-foreground">
+                {description}
+              </p>
+              {href && href !== "#" ? (
+                <Link
+                  href={href}
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel={href.startsWith("http") ? "noreferrer" : undefined}
+                  className="inline-flex h-fit items-center gap-1.5 text-xs underline decoration-border underline-offset-4 transition-colors hover:decoration-foreground"
+                >
+                  Visit company
+                  <ArrowUpRight className="size-3.5" />
+                </Link>
+              ) : null}
+            </div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </Card>
   );
 };
