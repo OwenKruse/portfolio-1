@@ -420,44 +420,18 @@ export default function Page() {
         className="relative isolate overflow-hidden bg-[#060908] text-white"
       >
         <div aria-hidden="true" className="absolute inset-0 -z-10">
-          <div className="absolute -left-[10%] -top-[20%] h-[70%] w-[60%] rounded-full bg-[#3c6a78] opacity-50 blur-[120px]" />
-          <div className="absolute -right-[5%] top-[-10%] h-[60%] w-[50%] rounded-full bg-[#c98a54] opacity-40 blur-[130px]" />
-          <div className="absolute left-[30%] top-[25%] h-[45%] w-[45%] rounded-full bg-[#445b3d] opacity-50 blur-[120px]" />
+          <Image
+            src="/mebg.jpeg"
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover"
+          />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(12,29,35,0.15)_0%,rgba(10,17,18,0.45)_40%,rgba(6,9,8,0.94)_75%,#050606_100%)]" />
         </div>
 
-        <div className={cn(CONTAINER, "pt-28 sm:pt-36")}>
-          <Reveal>
-            <Eyebrow index="04" dark>
-              Contact
-            </Eyebrow>
-            <h2 className="mt-5 max-w-[900px] text-[clamp(46px,5.4vw,80px)] font-normal leading-[1.02] tracking-[-0.06em]">
-              Have something worth building?
-            </h2>
-            <p className="mt-6 max-w-[520px] text-[17px] leading-[1.6] text-white/60">
-              I&apos;m always interested in thoughtful products, hard technical
-              problems, and teams that care about the details.
-            </p>
-            <div className="mt-10 flex flex-wrap gap-2.5">
-              <Link
-                href={`mailto:${DATA.contact.email}`}
-                className="inline-flex h-11 items-center gap-2 rounded-full bg-white px-5 text-sm font-medium text-[#111210] transition-colors hover:bg-white/90"
-              >
-                <Mail className="size-4" />
-                {DATA.contact.email}
-              </Link>
-              <Link
-                href={LINKEDIN_URL}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex h-11 items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-5 text-sm font-medium text-white backdrop-blur-md transition-colors hover:bg-white/15"
-              >
-                LinkedIn
-                <ArrowUpRight className="size-3.5" />
-              </Link>
-            </div>
-          </Reveal>
-
+        <div className={cn(CONTAINER, "")}>
+        
           <div className="mt-28 grid gap-12 border-t border-white/10 pt-12 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr]">
             <div>
               <span className="flex items-center gap-2.5 text-[17px] font-semibold tracking-[-0.03em]">
