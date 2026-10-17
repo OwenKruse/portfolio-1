@@ -10,7 +10,7 @@ export default function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-5 sm:pt-5">
       <div className="mx-auto flex h-14 max-w-[1320px] items-center justify-between border border-border/80 bg-background/90 px-4 shadow-[0_10px_40px_rgba(20,20,18,0.05)] backdrop-blur-md sm:px-5">
         <Link
-          href="#about"
+          href="/"
           className="flex items-center gap-3 text-sm font-medium tracking-[-0.02em]"
         >
           <span className="grid size-7 place-items-center bg-foreground font-mono text-[10px] text-background">

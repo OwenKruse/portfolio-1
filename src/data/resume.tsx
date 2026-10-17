@@ -77,7 +77,7 @@ export const DATA = {
       title: "AI/ML Training Intern",
       logoUrl: "/handshake.svg",
       start: "October 2025",
-      end: "Present",
+      end: "October 2026",
       description:
         "Supported training and evaluation workflows for machine learning systems used across Handshake AI products, improving model quality and reliability. Developed and refined data pipeline processes to prepare, structure, and validate training data for AI/ML applications. Contributed to experimentation and model assessment efforts by analyzing outputs, identifying performance gaps, and helping improve system effectiveness.",
     },
@@ -148,7 +148,7 @@ export const DATA = {
       links: [
         { type: "Website", href: "https://www.bookwaveaudio.com", icon: <Icons.globe className="size-3" /> },
       ],
-      image: "/bookwave-audio.png",
+      image: "/bookwave.png",
       video: "",
     },
     {
@@ -193,20 +193,20 @@ export const DATA = {
       image: "/phpb.png",
       video: "",
     },
-    {
-      title: "Professionly.co",
-      href: "https://www.professionly.co",
-      dates: "2025",
-      active: true,
-      description:
-        "Co-founded a platform connecting students with job opportunities; led technical development, product roadmap, and user‑driven feature iteration.",
-      technologies: ["Next.js", "TypeScript"],
-      links: [
-        { type: "Website", href: "https://www.professionly.co", icon: <Icons.globe className="size-3" /> },
-      ],
-      image: "/Professionly.png",
-      video: "",
-    },
+    // {
+    //   title: "Professionly.co",
+    //   href: "https://www.professionly.co",
+    //   dates: "2025",
+    //   active: true,
+    //   description:
+    //     "Co-founded a platform connecting students with job opportunities; led technical development, product roadmap, and user‑driven feature iteration.",
+    //   technologies: ["Next.js", "TypeScript"],
+    //   links: [
+    //     { type: "Website", href: "https://www.professionly.co", icon: <Icons.globe className="size-3" /> },
+    //   ],
+    //   image: "/Professionly.png",
+    //   video: "",
+    // },
     // {
     //   title: "Fiscus Trade",
     //   href: "https://trade.fiscusfinancial.pro",
@@ -245,7 +245,7 @@ export const DATA = {
       links: [
         { type: "Website", href: "https://www.vashonbuild.com", icon: <Icons.globe className="size-3" /> },
       ],
-      image: "/vashon-build/img.png",
+      image: "/vashonbuild.png",
       video: "",
     },
     {
