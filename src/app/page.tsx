@@ -435,7 +435,6 @@ export default function Page() {
           <div className="mt-28 grid gap-12 border-t border-white/10 pt-12 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr]">
             <div>
               <span className="flex items-center gap-2.5 text-[17px] font-semibold tracking-[-0.03em]">
-                <WaveLogo />
                 {DATA.name}
               </span>
               <p className="mt-4 max-w-[300px] text-[14px] leading-[1.6] text-white/50">
