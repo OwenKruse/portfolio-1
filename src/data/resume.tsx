@@ -193,6 +193,20 @@ export const DATA = {
       image: "/phpb.png",
       video: "",
     },
+    {
+      title: "Coding Plans",
+      href: "https://codingplans.app",
+      dates: "2026",
+      active: true,
+      description:
+        "Coding Plans is a platform for comparing AI coding plans and subscriptions in one place.",
+      technologies: ["Website"],
+      links: [
+        { type: "Website", href: "https://codingplans.app", icon: <Icons.globe className="size-3" /> },
+      ],
+      image: "/codingplans.png",
+      video: "",
+    },
     // {
     //   title: "Professionly.co",
     //   href: "https://www.professionly.co",
