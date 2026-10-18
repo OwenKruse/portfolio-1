@@ -14,7 +14,6 @@ export type CarouselProject = {
   description: string;
   image: string;
   background: string;
-  technologies: readonly string[];
 };
 
 export function ProjectCarousel({
@@ -97,16 +96,6 @@ export function ProjectCarousel({
               <p className="mt-2 line-clamp-3 text-[14px] leading-[1.55] text-[#6f7177]">
                 {project.description}
               </p>
-              <div className="mt-4 flex flex-wrap gap-1.5">
-                {project.technologies.slice(0, 3).map((tech) => (
-                  <span
-                    key={tech}
-                    className="rounded-full bg-[#f3f2ee] px-2.5 py-1 text-[11px] text-[#5f655d]"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
             </div>
           </Link>
         ))}

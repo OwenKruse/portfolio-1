@@ -90,21 +90,6 @@ function ProjectImage({
   );
 }
 
-function TechList({ items }: { items: readonly string[] }) {
-  return (
-    <div className="flex flex-wrap gap-1.5">
-      {items.map((tech) => (
-        <span
-          key={tech}
-          className="rounded-full bg-[#f3f2ee] px-2.5 py-1 text-[11px] text-[#5f655d]"
-        >
-          {tech}
-        </span>
-      ))}
-    </div>
-  );
-}
-
 export default function Page() {
   return (
     <main
@@ -205,9 +190,6 @@ export default function Page() {
                 <p className="mt-4 text-[16px] leading-[1.6] text-[#5f655d]">
                   {featured.description}
                 </p>
-                <div className="mt-6">
-                  <TechList items={featured.technologies} />
-                </div>
                 <span className={cn(BUTTON_PRIMARY, "mt-10 w-fit xl:mt-auto")}>
                   Visit site
                   <ArrowUpRight className="size-4" />
@@ -254,9 +236,6 @@ export default function Page() {
                     <p className="mt-2 text-[15px] leading-[1.6] text-[#5f655d]">
                       {project.description}
                     </p>
-                    <div className="mt-auto pt-6">
-                      <TechList items={project.technologies} />
-                    </div>
                   </div>
                 </Link>
               </Reveal>
@@ -283,7 +262,6 @@ export default function Page() {
               description: p.description,
               image: p.image,
               background: p.background,
-              technologies: p.technologies,
             }))}
             footer={
               <Link

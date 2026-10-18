@@ -1,5 +1,4 @@
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
@@ -10,7 +9,6 @@ interface Props {
   href?: string;
   description: string;
   dates: string;
-  tags: readonly string[];
   image?: string;
   video?: string;
   links?: readonly {
@@ -29,7 +27,6 @@ export function ProjectCard({
   href,
   description,
   dates,
-  tags,
   image,
   video,
   className,
@@ -115,18 +112,6 @@ export function ProjectCard({
             </p>
           </div>
         </CardContent>
-
-        <CardFooter className="flex flex-wrap gap-1.5 px-0 pb-0 pt-7">
-          {tags.map((tag) => (
-            <Badge
-              key={tag}
-              variant="outline"
-              className="rounded-none border-border bg-transparent px-2 py-1 font-mono text-[9px] font-normal uppercase tracking-[0.08em] text-muted-foreground"
-            >
-              {tag}
-            </Badge>
-          ))}
-        </CardFooter>
       </div>
     </Card>
   );
