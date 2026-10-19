@@ -1,6 +1,7 @@
 import { Reveal } from "@/components/new/reveal";
 import { SiteNav } from "@/components/new/site-nav";
 import { getBlogPosts } from "@/data/blog";
+import { backgroundFor } from "@/data/project-backgrounds";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
 import type { Metadata } from "next";
@@ -71,6 +72,14 @@ export default async function BlogPage() {
                 </div>
                 {post.metadata.image && (
                   <div className="relative aspect-[1.6] overflow-hidden rounded-[20px] bg-[#efeee9]">
+                    <Image
+                      src={backgroundFor(post.slug)}
+                      alt=""
+                      aria-hidden
+                      fill
+                      sizes="(min-width: 768px) 45vw, 100vw"
+                      className="object-cover"
+                    />
                     <Image
                       src={post.metadata.image}
                       alt=""

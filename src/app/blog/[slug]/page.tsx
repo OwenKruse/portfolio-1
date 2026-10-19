@@ -1,6 +1,7 @@
 import { BlogEmbed, splitEmbeds } from "@/components/blog/embeds";
 import { SiteNav } from "@/components/new/site-nav";
 import { getBlogPosts, getPost } from "@/data/blog";
+import { backgroundFor } from "@/data/project-backgrounds";
 import { DATA } from "@/data/resume";
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
@@ -93,6 +94,14 @@ export default async function BlogPost({ params }: Params) {
 
         {post.metadata.image && post.metadata.hero !== false && (
           <div className="relative mt-12 aspect-[1.63] overflow-hidden rounded-[20px] border border-black/[0.06] bg-[#efeee9]">
+            <Image
+              src={backgroundFor(slug)}
+              alt=""
+              aria-hidden
+              fill
+              sizes="(min-width: 768px) 720px, 100vw"
+              className="object-cover"
+            />
             <Image
               src={post.metadata.image}
               alt={post.metadata.title}

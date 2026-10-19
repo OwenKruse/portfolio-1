@@ -12,3 +12,9 @@ export const PROJECT_BACKGROUNDS = [
   "/HLbcEOeaUAAFkMt.jpeg",
   "/HNCBoh7bIAAlVCE.jpeg",
 ] as const;
+
+export function backgroundFor(key: string) {
+  let hash = 0;
+  for (const char of key) hash = (hash * 31 + char.charCodeAt(0)) | 0;
+  return PROJECT_BACKGROUNDS[Math.abs(hash) % PROJECT_BACKGROUNDS.length];
+}
