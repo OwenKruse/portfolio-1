@@ -1,0 +1,97 @@
+---
+title: "Building Preso.ink: Taking On Gamma and Anthropic With a Slide Builder"
+publishedAt: "2026-05-18"
+summary: "I built an AI presentation tool to compete with Gamma, grew it on Reddit instead of ads, and then watched Anthropic ship Claude Design. Here's how the design came together, how the marketing worked, and where I think the ceiling is."
+image: "/preso.png"
+---
+
+Every AI presentation tool I tried had the same problem. You type a topic, wait a few seconds and get a deck that looks like a deck. It has a title slide, some bullet points and a stock photo, and it looks like every other deck the same tool has ever made. Fixing it often takes longer than starting over in PowerPoint.
+
+So I built [Preso](https://www.preso.ink), an AI slide builder that tries to make presentations you'd actually be willing to present. This post covers how I designed it, how I got people to use it without spending money on ads, and what happened when one of the biggest AI labs in the world launched a product in the same space.
+
+## The market I walked into
+
+Going in, I knew I wasn't the first. **Gamma** already had millions of users, real funding and a polished product. Microsoft had Copilot built into PowerPoint. Google had Gemini in Slides. A dozen smaller startups had the same landing page with a different gradient.
+
+My bet was that being a big player in this space doesn't mean the output is good. Most of those tools optimize for "a deck appeared," not "this deck looks like a designer made it." If I could win on how the slides *looked* and how easy they were to fix, I thought there was room for a small, focused product.
+
+## Designing the product
+
+### Start from the slide, not the outline
+
+Most tools generate an outline, pour text into a fixed template and call it done. That's why everything looks the same: the layout is decided before the model knows what it's saying.
+
+I flipped that around. Preso decides what each slide is *for* first, like an opening statement, a comparison, a big number or a roadmap, and then builds a layout for that job. A slide with one strong claim gets a huge headline and lots of empty space. A slide with three parallel ideas gets a grid. That one decision made the decks feel much less templated.
+
+### Styles with a point of view
+
+Instead of offering hundreds of templates, I spent a long time on a small set of **style presets**, each with its own opinion about type, color and spacing: Swiss Modern, Bold Signal, Warm Editorial, Paper & Ink, Dark Botanical, Terminal Green and a few more. Each one is closer to a design system than a theme. Swiss Modern means a strict grid, heavy sans-serif type and very few colors. Warm Editorial means serif headlines and the pacing of a magazine.
+
+I iterated on these by generating the same deck in each style over and over and printing the results out. If I couldn't tell two styles apart from across the room, one of them got cut.
+
+### Brand kits
+
+The feature people asked about most was "can it look like *our* company?" So I built **brand kits**. You upload a brand PDF, a logo or a few screenshots, and Preso pulls out the colors, fonts and overall feel and applies them to every slide. Getting this right was harder than it sounds. A brand guide might list six colors, and the job is figuring out which one is the accent and which one should never touch body text.
+
+### An editor that doesn't fight you
+
+Generating a deck is only half the job. The other half is the twenty small fixes you want afterward. The editor went through three full rewrites before it felt right. The current version pairs a normal slide canvas with a **design agent** in a side panel. You can ask it to "split this into two slides" or "make this feel less corporate," and it will also point things out on its own, like a slide that's too dense or a chart that would read better as one big number.
+
+The rule I kept coming back to was that **the AI should never take away control.** Anything the agent does, you can undo, edit by hand or ignore.
+
+### Getting out of the app
+
+Nobody presents from a startup's web app. People present from PowerPoint, Keynote or Google Slides, on whatever laptop is plugged into the projector. So export had to be excellent: **PPTX, PDF and Google Slides**, with editable text boxes instead of flattened images. I spent more time on PPTX export than on almost anything else, because a deck that breaks when it's opened in PowerPoint is a deck that never gets shared again.
+
+## Marketing without an ad budget
+
+I didn't have money to compete with Gamma on paid ads, and honestly I didn't want to. Paid ads in this space are expensive, and they bring in people who try the product once and leave. So I treated marketing as building a following, and almost all of that happened on **Reddit**.
+
+### Be a person, not a brand
+
+The fastest way to get banned or ignored on Reddit is to show up and drop links. So I didn't. I spent weeks just participating in communities where people complain about presentations: students, consultants, startup founders, people stuck making the monthly all-hands deck. I answered questions about slide design, shared before-and-after redesigns and gave honest opinions on other tools, including Gamma, when people asked.
+
+When I did post about Preso, it was as the person who built it, with the full story: what I was trying to fix, what didn't work yet and what I wanted feedback on. Those posts did far better than anything that read like an ad.
+
+### Build in public
+
+I posted progress updates as I went, like new style presets, the brand-kit extraction and side-by-side comparisons of the same prompt across tools. Showing the actual output did more than any tagline could. People can argue with a claim, but it's hard to argue with a slide that clearly looks better.
+
+### Turn feedback into features, and say so
+
+Reddit users are blunt, which turned out to be the most valuable part. When someone said the exports broke in PowerPoint, I fixed it and replied in the thread to say it was fixed. When people asked for Google Slides export, I built it and tagged the people who asked. That loop of *you asked, I shipped, here it is* turned a lot of commenters into users, and a lot of users into people who recommended Preso in threads I never saw.
+
+### What it added up to
+
+By spring, most of Preso's signups came from people who had seen it mentioned on Reddit, often by someone who wasn't me. That's the difference between buying attention and earning a following: the following keeps working when you stop posting. Preso was also featured in the Codex Creator Challenge and by Handshake AI, which helped, but the base came from the community.
+
+The tradeoff is that it's slow. A following takes months of showing up, and you can't turn it up the way you can raise an ad budget. For a solo builder with more time than money, it was still clearly the right call.
+
+## Then Anthropic shipped Claude Design
+
+In April, Anthropic launched **Claude Design**, a way to make slides, prototypes, one-pagers and other visual work directly inside Claude. I had planned around Gamma being the main competitor. I had not planned around the company that makes the model.
+
+Trying it was humbling. It was good, and in some ways it was good at exactly the things I'd spent months on. It made layouts with real hierarchy, followed a brand when you gave it one and let you refine things by talking to it. It also came with two advantages I can't match.
+
+**Distribution.** Claude Design lives where a huge number of people already work. They don't have to hear about it on Reddit, sign up, add credits or learn a new tool. It's just there, one prompt away, inside a subscription they already pay for.
+
+**Cost.** Preso runs on frontier models, and I pay for every token. Anthropic doesn't pay retail for its own model. Whatever I charge has to cover inference *and* make sense next to a tool that's included in a plan people already have.
+
+### The ceiling
+
+This is the part I've been thinking about most. When you build a product on top of a model, the model company can always move up and build that product themselves. When they do, the features you thought set you apart can turn into things they ship for free.
+
+Signups slowed after the launch. Not to zero, since the people who found Preso through Reddit mostly stayed, but the curve changed shape. New users who would have found Preso were now asking Claude directly. And the version of Preso that was "a great general-purpose AI deck maker" stopped being a story I could tell with a straight face.
+
+## What I learned
+
+- **Taste is a real advantage, but not a permanent one.** Good design got Preso noticed in a crowded market. It doesn't protect you once the platform underneath you decides to compete.
+- **A following is worth more than traffic.** The Reddit community is the reason Preso survived the Claude Design launch at all. People who feel like they helped build something don't leave the first time something shinier shows up.
+- **Own something the model company won't.** Anthropic is going to build the general tool. The opening for small builders is in narrower places: specific workflows, specific industries and deep integrations with how a particular team already works.
+- **Build it anyway.** I learned more about design, product and distribution from building Preso than from anything else I've worked on. That stays mine no matter where the market goes.
+
+## What's next for Preso
+
+Preso isn't shutting down. You can still [make a deck](https://www.preso.ink) with $5 of free credits when you sign up. But I'm moving away from competing head-on as a general tool and toward the parts that are more specific: brand kits that actually hold up, exports that survive being opened in PowerPoint, and workflows for people who make the same kind of deck every week.
+
+If you've used Preso, or you've watched a platform you built on start competing with you, I'd love to hear how you're thinking about it.
