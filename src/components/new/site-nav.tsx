@@ -7,9 +7,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const LINKS = [
-  { href: "#work", label: "Work" },
-  { href: "#experience", label: "Experience" },
-  { href: "#education", label: "Education" },
+  { href: "/#work", label: "Work" },
+  { href: "/#experience", label: "Experience" },
+  { href: "/#education", label: "Education" },
+  { href: "/blog", label: "Blog" },
 ];
 
 function Collapsible({
@@ -57,7 +58,7 @@ export function SiteNav() {
         )}
       >
         <Link
-          href="#top"
+          href="/#top"
           aria-label={DATA.name}
           className="flex items-center text-[17px] font-semibold tracking-[-0.03em] text-[#111210]"
         >

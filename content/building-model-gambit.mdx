@@ -1,0 +1,102 @@
+---
+title: "Building Model Gambit: Why LLMs Play Chess Like People"
+publishedAt: "2026-10-19"
+summary: "I built a site where you can play chess against language models. They're much weaker than Stockfish, and they lose in ways that feel a lot like people do. I think that could make them better training partners than traditional bots."
+image: "/modelgambit.png"
+---
+
+I've played chess for a long time, including in my university's chess club, and for most of that time my practice opponent has been either a person or an engine. Engines are amazing at chess and pretty bad at teaching it. They win in ways you can't learn from, and when you turn them down to beginner level they just play badly in random spots.
+
+So I built [Model Gambit](https://www.modelgambit.com), a site where you play chess against large language models, the same kind of model behind ChatGPT, Claude and Gemini, or watch two of them play each other. It started as a question I couldn't stop thinking about: what happens when a model that was never built for chess sits down at a board?
+
+The short answer is that it plays a lot like a person. This post covers how I built the platform and why I think that matters more than how strong the models are.
+
+## A language model is not a chess engine
+
+Stockfish searches millions of positions per second. It has a move generator, a search tree and an evaluation function tuned over years. It can't make an illegal move, because it never thinks about one.
+
+A language model has none of that. It never looks at a board. It reads text that describes one, reasons in plain language and writes down a move. It has read a huge amount of chess writing: opening books, annotated games, forum arguments about the Sicilian. But it has no built-in idea of where the pieces are. Everything it knows about the position comes from text.
+
+That made me want to set up a fair test of what these models can actually do, and then make it fun to watch.
+
+## How the platform works
+
+### What a model sees
+
+On each turn the model gets the position roughly the way you'd describe it to a friend over text:
+
+- the position in FEN, plus an ASCII drawing of the board
+- a list of where each side's pieces are
+- the moves played so far, and whether it's in check
+- how much time it has left, in games with a clock
+
+It answers by calling a `make_move` tool with a move like `Nf3` or `e2e4`, plus a one-line comment in character. Models that can't call tools just write the move at the end of their reply. A model can also resign, and it's told to do that only when the position is truly lost.
+
+One of my more important design choices is that **by default the model is not given the list of legal moves.** If you hand it the list, the task becomes multiple choice and you hide the most interesting part, which is whether the model can actually follow the board. You can turn the list on in the game settings, or give the model a tool to look moves up, and comparing the two is interesting in its own right.
+
+### Dealing with illegal moves
+
+Language models sometimes try moves that break the rules. They move a piece that isn't there, slide a bishop through a pawn, or ignore a check. I had to decide what to do about that, and I landed on treating it like a patient arbiter would. The move is rejected, the model is told why, and it tries again, up to a number of retries you choose. If it runs out of retries, the game either plays a random legal move for it or counts it as a forfeit, depending on your settings.
+
+Then there's **Chaos mode**, which turns all of that off. Illegal moves go through, pieces teleport, and the game ends when a king is captured. It isn't serious chess. It is very fun to watch.
+
+### Watching them think
+
+My favorite part of the site is that you can see the reasoning. Reasoning models stream their thinking while they play, so you read along as the model weighs its options, talks itself into a plan and sometimes argues itself out of it. At the same time, **Stockfish runs in your browser and grades every move**, from best and excellent down to inaccuracy, mistake and blunder, with an evaluation bar beside the board.
+
+So you get two views of the same move: what the model *said* it was doing and what the engine says actually happened. The gap between the two is where most of the interesting stuff on the site happens.
+
+### Ratings
+
+Every model gets an Elo rating, calculated the same way FIDE rates human players. Everyone starts at 1500, and only games between two different models count, so a rating measures how a model does against other AIs. Ratings stay provisional, and move faster, until a model has played 30 rated games. Model Gambit TV on the home page runs games between featured models around the clock, so the leaderboard is always changing.
+
+### Making it easy to try
+
+I wanted anyone to be able to play right away. Open models from NVIDIA's build.nvidia.com, like Kimi, GLM, DeepSeek, Nemotron, Gemma and gpt-oss, are free with no account. To play OpenAI, Gemini or Claude models you sign in and add your own API key, which is stored encrypted and never sent back to the browser. You can play with a bullet, blitz or rapid clock and, where the model supports it, choose how hard a reasoning model thinks on each move.
+
+## The surprising part: they play like humans
+
+After watching a lot of these games, the thing that stuck with me wasn't how strong or weak the models were. It was how *familiar* their play felt.
+
+**They know the openings.** Models usually play sensible, theory-based moves early on. They develop pieces, fight for the center and castle. Their comments sound like a club player who's read a few opening books.
+
+**Their mistakes are human mistakes.** When a weak engine blunders, it's random: perfect play for ten moves, then it drops its queen for no reason. When a language model goes wrong, there's usually a *reason* you can recognize. It follows a principle that doesn't apply here, misses a quiet defensive move, gets attached to a plan after the position has changed, or loses track of a piece that moved several turns ago. Those are the same ways people lose games.
+
+**They get worse as the position gets messy.** Like humans, models are most comfortable in familiar, structured positions and struggle when things get sharp and tactical. Stronger reasoning models hold up noticeably longer, and you can see the extra thinking pay off in the evaluation bar.
+
+**They explain themselves.** An engine gives you a number. A language model gives you a story: "I'm putting pressure on the e-file before my opponent can castle." Sometimes the story is wrong, and that's useful too, because seeing *why* a plausible idea fails is how you actually get better.
+
+**They have personalities.** Different models have different styles. Some are cautious, some are reckless, some resign gracefully and some fight on in lost positions. The in-character comments make a game feel like it has an opponent in it, not just a calculator.
+
+## Why this might matter for learning chess
+
+Here's the idea I keep coming back to: **for most players, a human-like opponent is worth more than a perfect one.**
+
+Traditional bots handle strength by taking a near-perfect engine and weakening it, through limited search depth, a bit of randomness and the occasional deliberate blunder. That gives you the right *rating* but the wrong *feel*. You learn to wait for the bot's random gift instead of learning to build pressure and exploit the kind of mistakes real opponents make.
+
+Researchers have known about this gap for a while. Projects like Maia trained neural networks on millions of human games so they'd predict the moves real players at a given rating actually make, not the best move. Language models get to something similar from a different direction. Their mistakes come from reasoning about the position in words, the same way people do, so they make the kinds of errors people make.
+
+That opens up a few things I'm excited about:
+
+1. **Practicing against realistic mistakes.** If your opponent's errors look like a real 1400 player's errors, punishing them builds habits that transfer to real games.
+2. **An opponent that can explain itself.** Most human opponents won't tell you their plan in the middle of a game. A model will, and you can compare its reasoning with your own.
+3. **An engine as a coach, not an opponent.** On Model Gambit the language model plays and Stockfish grades. I think that split is right: let the human-like player give you a realistic game, and use the engine afterward to check what was actually true.
+4. **Picking an opponent by style.** Instead of choosing "Level 6," you could pick an opponent that plays aggressively, or one that loves endgames, or one that's tuned to your weak spots.
+5. **Asking questions after the game.** After a loss you could ask your opponent why it didn't take your knight on move 14 and get a real answer, right or wrong, that you can check against the engine.
+
+## The honest caveats
+
+Language models are not ready to replace every chess bot tomorrow.
+
+- **They still make illegal moves sometimes**, which no serious training tool can allow without a safety net like the retry system.
+- **Their strength isn't well calibrated yet.** A model's Elo against other models doesn't tell you exactly how it would do against a 1600 human.
+- **A model's explanation isn't always its real reason.** Sometimes the story is reconstructed after the fact, so you should check its claims against the engine, not take them as gospel.
+- **They're slower and cost more** than an engine running on your laptop, especially reasoning models that think hard about each move.
+
+All of that is improving quickly, though. Every new generation of models I add to the site plays better than the last one, and the gap between the free open models and the frontier ones keeps getting more interesting.
+
+## Where I think this goes
+
+My guess is that in a few years "play against the computer" will mean something different. Instead of a strength slider on a soulless engine, you'll play an opponent that has a style, makes believable mistakes, talks through its ideas and remembers your last game. The engine won't go away; it'll move into the coach's chair, where it's most useful.
+
+Model Gambit is my small experiment toward that. You can [play a model](https://www.modelgambit.com) for free right now, watch two of them battle it out on Model Gambit TV, or read [how it all works](https://www.modelgambit.com/how-it-works). If you have ideas, or you find a model doing something strange at the board, I'd love to hear about it.

@@ -166,6 +166,20 @@ export const DATA = {
       video: "",
     },
     {
+      title: "Model Gambit",
+      href: "https://www.modelgambit.com",
+      dates: "2026",
+      active: true,
+      description:
+        "Play chess against AI language models, or watch them play each other. Models read the board as text, stream their reasoning as they think, and earn an Elo rating, while Stockfish grades every move.",
+      technologies: ["Website"],
+      links: [
+        { type: "Website", href: "https://www.modelgambit.com", icon: <Icons.globe className="size-3" /> },
+      ],
+      image: "/modelgambit.png",
+      video: "",
+    },
+    {
       title: "ImplyX",
       href: "https://www.implyx.com",
       dates: "2026",
