@@ -4,12 +4,15 @@ import { parseExpression, type Fn2 } from "@/lib/math-expr";
 import { METHODS, reference, solve, type Method } from "@/lib/ode";
 import { cn } from "@/lib/utils";
 import {
+  Check,
+  ChevronDown,
   Maximize2,
   Pause,
   Play,
   RotateCcw,
   StepBack,
   StepForward,
+  X,
   ZoomIn,
   ZoomOut,
 } from "lucide-react";
@@ -125,6 +128,9 @@ const M = { left: 44, right: 14, top: 14, bottom: 30 };
 const H_MIN = 0.01;
 const H_MAX = 2;
 const MAX_TABLE_ROWS = 400;
+const MAX_POINTS = 12;
+
+type StartPoint = { id: number; x: number; y: number };
 
 const SUBSCRIPTS = "₀₁₂₃₄₅₆₇₈₉";
 const sub = (n: number) =>
@@ -190,8 +196,8 @@ export function EulerExplorer() {
   const [exprText, setExprText] = useState(initial.expr);
   const [fn, setFn] = useState<Fn2>(() => (_x: number, y: number) => y);
   const [exprError, setExprError] = useState<{ error: string; index: number } | null>(null);
-  const [x0, setX0] = useState(initial.x0);
-  const [y0, setY0] = useState(initial.y0);
+  const [points, setPoints] = useState<StartPoint[]>([{ id: 0, x: initial.x0, y: initial.y0 }]);
+  const [activeId, setActiveId] = useState(0);
   const [xEnd, setXEnd] = useState(initial.xEnd);
   const [h, setH] = useState(initial.h);
   const [method, setMethod] = useState<Method>("euler");
@@ -207,13 +213,51 @@ export function EulerExplorer() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const tableRef = useRef<HTMLDivElement>(null);
+  const nextId = useRef(1);
+  const lastPointClick = useRef<{ id: number; time: number } | null>(null);
   const drag = useRef<{
     mode: "start" | "end" | "pan";
+    id?: number;
     clientX: number;
     clientY: number;
     view: View;
     moved: boolean;
   } | null>(null);
+  const active = points.find((p) => p.id === activeId) ?? points[0];
+  const x0 = active.x;
+  const y0 = active.y;
+
+  function movePoint(id: number, x: number, y: number) {
+    setPoints((list) => list.map((p) => (p.id === id ? { ...p, x, y } : p)));
+    setPreset(null);
+  }
+
+  function addPoint(x: number, y: number) {
+    const id = nextId.current++;
+    // Past the limit, the oldest point makes room.
+    setPoints((list) => [...list, { id, x, y }].slice(-MAX_POINTS));
+    setActiveId(id);
+    setCursor(null);
+    setPlaying(false);
+    setPreset(null);
+  }
+
+  function removePoint(id: number) {
+    if (points.length < 2) return;
+    const rest = points.filter((p) => p.id !== id);
+    setPoints(rest);
+    if (id === active.id) setActiveId(rest[rest.length - 1].id);
+    setCursor(null);
+    setPlaying(false);
+  }
+
+  function selectPoint(id: number) {
+    if (id === active.id) return;
+    setActiveId(id);
+    setCursor(null);
+    setPlaying(false);
+  }
+
   const clipId = `euler-clip-${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
 
   // Size the SVG in real pixels so text and strokes never scale.
@@ -260,6 +304,20 @@ export function EulerExplorer() {
       ),
     [fn, x0, y0, xEnd, view.xmin, view.xmax],
   );
+  const others = useMemo(
+    () =>
+      points
+        .filter((p) => p.id !== active.id)
+        .map((p) => ({
+          point: p,
+          path: solve(fn, method, p.x, p.y, xEnd, h),
+          exact: showExact
+            ? reference(fn, p.x, p.y, Math.min(view.xmin, p.x), Math.max(view.xmax, p.x))
+            : null,
+        })),
+    [points, active.id, fn, method, xEnd, h, showExact, view.xmin, view.xmax],
+  );
+
   const exactEnd = exact.sample(xEnd);
   const exactBlowsUp = !Number.isFinite(exactEnd);
 
@@ -315,8 +373,9 @@ export function EulerExplorer() {
     setExprText(p.expr);
     setFn(() => result.fn);
     setExprError(null);
-    setX0(p.x0);
-    setY0(p.y0);
+    const id = nextId.current++;
+    setPoints([{ id, x: p.x0, y: p.y0 }]);
+    setActiveId(id);
     setXEnd(p.xEnd);
     setH(p.h);
     setView(p.view);
@@ -342,11 +401,12 @@ export function EulerExplorer() {
   }
 
   function fit() {
-    const lo = Math.min(x0, xEnd);
-    const hi = Math.max(x0, xEnd);
-    const ys = [y0];
+    const lo = Math.min(xEnd, ...points.map((p) => p.x));
+    const hi = Math.max(xEnd, ...points.map((p) => p.x));
+    const ys = points.map((p) => p.y);
     for (const [x, y] of exact.points) if (x >= lo && x <= hi && Number.isFinite(y)) ys.push(y);
     for (const r of results) for (const y of r.path.ys) ys.push(y);
+    for (const o of others) for (const y of o.path.ys) ys.push(y);
     const sorted = ys.filter((y) => Math.abs(y) < 1e6).sort((a, b) => a - b);
     // Trim extreme outliers so one runaway step doesn't flatten everything.
     const yLo = sorted[Math.floor(sorted.length * 0.02)] ?? -1;
@@ -378,9 +438,23 @@ export function EulerExplorer() {
 
   function onPointerDown(e: React.PointerEvent<SVGSVGElement>) {
     if (e.button !== 0) return;
-    const handle = (e.target as Element).closest("[data-handle]")?.getAttribute("data-handle");
+    const target = (e.target as Element).closest("[data-handle]");
+    const handle = target?.getAttribute("data-handle");
+    const id = handle === "start" ? Number(target!.getAttribute("data-id")) : undefined;
+    if (id !== undefined) {
+      // Double-click a point to remove it; a single click selects it.
+      const last = lastPointClick.current;
+      if (last?.id === id && e.timeStamp - last.time < 350) {
+        lastPointClick.current = null;
+        removePoint(id);
+        return;
+      }
+      lastPointClick.current = { id, time: e.timeStamp };
+      selectPoint(id);
+    }
     drag.current = {
       mode: handle === "start" || handle === "end" ? handle : "pan",
+      id,
       clientX: e.clientX,
       clientY: e.clientY,
       view,
@@ -398,10 +472,8 @@ export function EulerExplorer() {
       return;
     }
     if (Math.hypot(e.clientX - d.clientX, e.clientY - d.clientY) > 3) d.moved = true;
-    if (d.mode === "start") {
-      setX0(snap(p.x, xStep / 20));
-      setY0(snap(p.y, yStep / 20));
-      setPreset(null);
+    if (d.mode === "start" && d.id !== undefined) {
+      movePoint(d.id, snap(p.x, xStep / 20), snap(p.y, yStep / 20));
     } else if (d.mode === "end") {
       setXEnd(snap(p.x, xStep / 20));
     } else if (d.moved) {
@@ -419,16 +491,21 @@ export function EulerExplorer() {
   function onPointerUp(e: React.PointerEvent<SVGSVGElement>) {
     const d = drag.current;
     drag.current = null;
+    // A drag isn't half of a double-click.
+    if (d?.moved) lastPointClick.current = null;
     if (d?.mode === "pan" && !d.moved) {
-      // A click (not a drag) on empty space moves the starting point there.
+      // A click (not a drag) on empty space adds a starting point there.
       const p = toData(e.clientX, e.clientY);
-      setX0(snap(p.x, xStep / 20));
-      setY0(snap(p.y, yStep / 20));
-      setPreset(null);
+      addPoint(snap(p.x, xStep / 20), snap(p.y, yStep / 20));
     }
   }
 
-  function onHandleKey(e: React.KeyboardEvent) {
+  function onHandleKey(e: React.KeyboardEvent, point: StartPoint) {
+    if (e.key === "Delete" || e.key === "Backspace") {
+      e.preventDefault();
+      removePoint(point.id);
+      return;
+    }
     const big = e.shiftKey ? 10 : 1;
     const moves: Record<string, [number, number]> = {
       ArrowLeft: [-xStep / 10, 0],
@@ -439,9 +516,12 @@ export function EulerExplorer() {
     const move = moves[e.key];
     if (!move) return;
     e.preventDefault();
-    setX0((v) => snap(v + move[0] * big, xStep / 20));
-    setY0((v) => snap(v + move[1] * big, yStep / 20));
-    setPreset(null);
+    selectPoint(point.id);
+    movePoint(
+      point.id,
+      snap(point.x + move[0] * big, xStep / 20),
+      snap(point.y + move[1] * big, yStep / 20),
+    );
   }
 
   // Slope field: short segments drawn in screen space so they look right at any zoom.
@@ -593,7 +673,7 @@ export function EulerExplorer() {
               onPointerUp={onPointerUp}
               onPointerCancel={() => (drag.current = null)}
               onPointerLeave={() => setHover(null)}
-              aria-label={`Plot of dy/dx = ${exprText} with Euler approximation from (${x0}, ${y0}) to x = ${xEnd}`}
+              aria-label={`Plot of dy/dx = ${exprText} with Euler approximations from ${points.length} start point${points.length === 1 ? "" : "s"} to x = ${xEnd}`}
             >
               <defs>
                 <clipPath id={clipId}>
@@ -629,6 +709,22 @@ export function EulerExplorer() {
 
                 {/* End marker */}
                 <line x1={sx(xEnd)} x2={sx(xEnd)} y1={M.top} y2={M.top + ph} stroke="#111210" strokeOpacity={0.25} strokeDasharray="3 4" />
+
+                {others.map(({ point, path, exact: curve }) => (
+                  <g key={point.id} pointerEvents="none">
+                    {curve && (
+                      <path d={polyline(curve.points, sx, sy)} fill="none" stroke={EXACT} strokeOpacity={0.3} strokeWidth={1.25} />
+                    )}
+                    <path
+                      d={polyline(path.xs.map((x, i) => [x, path.ys[i]]), sx, sy)}
+                      fill="none"
+                      stroke={SERIES[0]}
+                      strokeOpacity={0.45}
+                      strokeWidth={1.75}
+                      strokeLinejoin="round"
+                    />
+                  </g>
+                ))}
 
                 {showExact && (
                   <path
@@ -714,19 +810,33 @@ export function EulerExplorer() {
                   <rect x={sx(xEnd) - 10} y={M.top} width={20} height={ph} fill="transparent" />
                 </g>
 
-                {/* Start handle */}
-                <g
-                  data-handle="start"
-                  className="cursor-grab outline-none active:cursor-grabbing"
-                  style={{ touchAction: "none" }}
-                  tabIndex={0}
-                  role="button"
-                  aria-label={`Initial point (${fmt(x0)}, ${fmt(y0)}). Use arrow keys to move it.`}
-                  onKeyDown={onHandleKey}
-                >
-                  <circle cx={clampPx(sx(x0))} cy={clampPx(sy(y0))} r={18} fill="transparent" />
-                  <circle cx={clampPx(sx(x0))} cy={clampPx(sy(y0))} r={7.5} fill="white" stroke="#111210" strokeWidth={2.5} />
-                </g>
+                {/* Start handles, active one on top */}
+                {[...points.filter((p) => p.id !== active.id), active].map((point) => {
+                  const isActive = point.id === active.id;
+                  return (
+                    <g
+                      key={point.id}
+                      data-handle="start"
+                      data-id={point.id}
+                      className="cursor-grab outline-none active:cursor-grabbing"
+                      style={{ touchAction: "none" }}
+                      tabIndex={0}
+                      role="button"
+                      aria-label={`Start point (${fmt(point.x)}, ${fmt(point.y)})${isActive ? ", selected" : ""}. Arrow keys move it, Delete removes it.`}
+                      onKeyDown={(e) => onHandleKey(e, point)}
+                    >
+                      <circle cx={clampPx(sx(point.x))} cy={clampPx(sy(point.y))} r={18} fill="transparent" />
+                      <circle
+                        cx={clampPx(sx(point.x))}
+                        cy={clampPx(sy(point.y))}
+                        r={isActive ? 7.5 : 6}
+                        fill="white"
+                        stroke={isActive ? "#111210" : "#8a8c86"}
+                        strokeWidth={isActive ? 2.5 : 2}
+                      />
+                    </g>
+                  );
+                })}
               </g>
             </svg>
 
@@ -878,14 +988,33 @@ export function EulerExplorer() {
             </Toggle>
           </Panel>
 
-          <Panel title="Start and end">
-            <div className="grid grid-cols-3 gap-1.5">
-              <NumberField label="x₀" value={x0} onCommit={(v) => { setX0(v); setPreset(null); }} />
-              <NumberField label="y₀" value={y0} onCommit={(v) => { setY0(v); setPreset(null); }} />
+          <Panel
+            title="Start points"
+            aside={
+              points.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => { setPoints([active]); setCursor(null); setPlaying(false); }}
+                  className="rounded-[8px] px-2 py-1 text-[12px] text-[#6f7177] transition-colors hover:bg-[#f3f2ee] hover:text-[#111210]"
+                >
+                  Clear others
+                </button>
+              )
+            }
+          >
+            <PointPicker
+              points={points}
+              activeId={active.id}
+              onSelect={selectPoint}
+              onRemove={removePoint}
+            />
+            <div className="mt-3 grid grid-cols-3 gap-1.5">
+              <NumberField label="x₀" value={x0} onCommit={(v) => movePoint(active.id, v, y0)} />
+              <NumberField label="y₀" value={y0} onCommit={(v) => movePoint(active.id, x0, v)} />
               <NumberField label="end x" value={xEnd} onCommit={setXEnd} />
             </div>
             <p className="mt-2 text-[12px] leading-[1.45] text-[#8a8c86]">
-              Drag the white point or click anywhere to start there. Drag “end” to change how far to go.
+              Click the plot to add a start point. Drag points to move them, and double-click one to remove it. Drag “end” to change how far to go.
             </p>
           </Panel>
 
@@ -993,6 +1122,97 @@ export function EulerExplorer() {
         </div>
       </div>
     </section>
+  );
+}
+
+function PointPicker({
+  points,
+  activeId,
+  onSelect,
+  onRemove,
+}: {
+  points: StartPoint[];
+  activeId: number;
+  onSelect: (id: number) => void;
+  onRemove: (id: number) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const active = points.find((p) => p.id === activeId) ?? points[0];
+  const label = (p: StartPoint) => `(${fmt(p.x, 2)}, ${fmt(p.y, 2)})`;
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: PointerEvent) => {
+      if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("pointerdown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("pointerdown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  return (
+    <div ref={rootRef} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-haspopup="true"
+        aria-expanded={open}
+        aria-label={`Selected start point ${label(active)}, ${points.length} total`}
+        className="flex w-full items-center gap-2 rounded-[10px] border border-black/10 bg-[#fbfbfa] px-2.5 py-1.5 text-left transition-colors hover:border-black/25"
+      >
+        <span className="size-2 shrink-0 rounded-full bg-[#e8590c]" />
+        <span className="min-w-0 flex-1 truncate font-mono text-[13px] text-[#111210]">{label(active)}</span>
+        <span className="shrink-0 text-[12px] text-[#8a8c86]">
+          {points.length} point{points.length === 1 ? "" : "s"}
+        </span>
+        <ChevronDown className={cn("size-3.5 shrink-0 text-[#8a8c86] transition-transform", open && "rotate-180")} />
+      </button>
+
+      {open && (
+        <div className="absolute inset-x-0 top-[calc(100%+4px)] z-20 max-h-[232px] overflow-auto rounded-[12px] border border-black/10 bg-white p-1 shadow-[0_16px_40px_-12px_rgba(17,18,16,0.25)]">
+          {points.map((point, i) => {
+            const isActive = point.id === activeId;
+            return (
+              <div
+                key={point.id}
+                className={cn(
+                  "group flex items-center rounded-[8px] transition-colors",
+                  isActive ? "bg-[#fff4ec]" : "hover:bg-[#f6f5f1]",
+                )}
+              >
+                <button
+                  type="button"
+                  onClick={() => {
+                    onSelect(point.id);
+                    setOpen(false);
+                  }}
+                  aria-current={isActive}
+                  className="flex min-w-0 flex-1 items-center gap-2 px-2 py-1.5 text-left"
+                >
+                  <span className="w-4 shrink-0 text-[11px] tabular-nums text-[#a9aca4]">{i + 1}</span>
+                  <span className="min-w-0 flex-1 truncate font-mono text-[12.5px] text-[#111210]">{label(point)}</span>
+                  {isActive && <Check className="size-3.5 shrink-0 text-[#e8590c]" />}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onRemove(point.id)}
+                  disabled={points.length < 2}
+                  aria-label={`Remove start point ${label(point)}`}
+                  className="mr-1 grid size-6 shrink-0 place-items-center rounded-[6px] text-[#a9aca4] transition-colors hover:bg-black/[0.06] hover:text-[#111210] disabled:pointer-events-none disabled:opacity-30"
+                >
+                  <X className="size-3.5" />
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
   );
 }
 
