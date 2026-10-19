@@ -1,3 +1,4 @@
+import { BlogEmbed, splitEmbeds } from "@/components/blog/embeds";
 import { SiteNav } from "@/components/new/site-nav";
 import { getBlogPosts, getPost } from "@/data/blog";
 import { DATA } from "@/data/resume";
@@ -8,6 +9,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 type Params = { params: Promise<{ slug: string }> };
+
+const PROSE =
+  "prose prose-neutral max-w-none text-[17px] leading-[1.75] text-[#2f322e] prose-headings:font-normal prose-headings:tracking-[-0.035em] prose-headings:text-[#111210] prose-h2:mt-14 prose-h2:text-[30px] prose-h3:text-[22px] prose-p:text-[#3a3d39] prose-a:text-[#111210] prose-a:decoration-[#f0c8a2] prose-a:decoration-2 prose-a:underline-offset-4 hover:prose-a:decoration-[#111210] prose-strong:font-semibold prose-strong:text-[#111210] prose-blockquote:border-l-[#f0c8a2] prose-blockquote:font-normal prose-blockquote:not-italic prose-blockquote:text-[#5f655d] prose-code:rounded prose-code:bg-[#f3f2ee] prose-code:px-1.5 prose-code:py-0.5 prose-code:font-normal prose-code:before:content-none prose-code:after:content-none prose-pre:rounded-[14px] prose-pre:border prose-pre:border-black/[0.06] prose-pre:bg-[#fbfbfa] prose-li:marker:text-[#b0b2ab] prose-hr:border-black/[0.08]";
 
 function formatDate(date: string) {
   return new Date(`${date}T00:00:00`).toLocaleDateString("en-US", {
@@ -87,7 +91,7 @@ export default async function BlogPost({ params }: Params) {
           <p className="mt-6 text-[14px] text-[#8a8c86]">By {DATA.name}</p>
         </header>
 
-        {post.metadata.image && (
+        {post.metadata.image && post.metadata.hero !== false && (
           <div className="relative mt-12 aspect-[1.63] overflow-hidden rounded-[20px] border border-black/[0.06] bg-[#efeee9]">
             <Image
               src={post.metadata.image}
@@ -100,10 +104,19 @@ export default async function BlogPost({ params }: Params) {
           </div>
         )}
 
-        <div
-          className="prose prose-neutral mt-12 max-w-none text-[17px] leading-[1.75] text-[#2f322e] prose-headings:font-normal prose-headings:tracking-[-0.035em] prose-headings:text-[#111210] prose-h2:mt-14 prose-h2:text-[30px] prose-h3:text-[22px] prose-p:text-[#3a3d39] prose-a:text-[#111210] prose-a:decoration-[#f0c8a2] prose-a:decoration-2 prose-a:underline-offset-4 hover:prose-a:decoration-[#111210] prose-strong:font-semibold prose-strong:text-[#111210] prose-blockquote:border-l-[#f0c8a2] prose-blockquote:font-normal prose-blockquote:not-italic prose-blockquote:text-[#5f655d] prose-code:rounded prose-code:bg-[#f3f2ee] prose-code:px-1.5 prose-code:py-0.5 prose-code:font-normal prose-code:before:content-none prose-code:after:content-none prose-pre:rounded-[14px] prose-pre:border prose-pre:border-black/[0.06] prose-pre:bg-[#fbfbfa] prose-li:marker:text-[#b0b2ab] prose-hr:border-black/[0.08]"
-          dangerouslySetInnerHTML={{ __html: post.source }}
-        />
+        <div className="mt-12">
+          {splitEmbeds(post.source).map((part, i) =>
+            part.type === "html" ? (
+              <div
+                key={i}
+                className={PROSE}
+                dangerouslySetInnerHTML={{ __html: part.html }}
+              />
+            ) : (
+              <BlogEmbed key={i} name={part.name} />
+            ),
+          )}
+        </div>
       </article>
     </main>
   );
