@@ -1,12 +1,10 @@
 "use client";
 
-import { KATEX_MACROS, MATH_COLORS as C } from "@/data/math-colors";
+import { fmt, INK, niceStep, Tex, ticks, windowSamples, type View } from "@/components/blog/graph-kit";
+import { MATH_COLORS as C } from "@/data/math-colors";
 import { cn } from "@/lib/utils";
-import katex from "katex";
 import { Check, Pause, Play, X, ZoomIn, ZoomOut } from "lucide-react";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
-
-type View = { xmin: number; xmax: number; ymin: number; ymax: number };
 
 type Rule = { label: string; delta: (eps: number) => number };
 
@@ -26,7 +24,6 @@ type Scenario = {
   note: string;
 };
 
-const INK = "#111210";
 const M = { left: 40, right: 64, top: 40, bottom: 30 };
 const SAMPLES = 400;
 const MANUAL = -1;
@@ -105,42 +102,6 @@ const JUMP: Scenario = {
   deltaMax: 1.2,
   note: "⌊x⌋ jumps from 0 to 1 at x = 1. Guess L = 1 and the right side behaves, but every window also catches points just left of 1, where f(x) = 0. Pick ε ≤ 1 and nothing works. That's what “the limit does not exist” looks like.",
 };
-
-function Tex({ tex, className }: { tex: string; className?: string }) {
-  const html = useMemo(
-    () => katex.renderToString(tex, { macros: { ...KATEX_MACROS }, throwOnError: false }),
-    [tex],
-  );
-  return <span className={className} dangerouslySetInnerHTML={{ __html: html }} />;
-}
-
-function fmt(v: number) {
-  return v < 0.1 ? v.toFixed(3) : v.toFixed(2);
-}
-
-function niceStep(range: number, count: number) {
-  const raw = range / Math.max(count, 1);
-  const pow = Math.pow(10, Math.floor(Math.log10(raw)));
-  const err = raw / pow;
-  return (err >= 7.5 ? 10 : err >= 3.5 ? 5 : err >= 1.5 ? 2 : 1) * pow;
-}
-
-function ticks(min: number, max: number, step: number) {
-  const out: number[] = [];
-  for (let v = Math.ceil(min / step) * step; v <= max + step * 1e-9; v += step) {
-    out.push(Math.abs(v) < step * 1e-9 ? 0 : Number(v.toFixed(10)));
-  }
-  return out;
-}
-
-// Points inside the punctured window 0 < |x − a| < δ, left side then right.
-function windowSamples(a: number, delta: number, n: number) {
-  const left: number[] = [];
-  const right: number[] = [];
-  for (let k = n; k >= 1; k--) left.push(a - delta * ((k - 0.5) / n));
-  for (let k = 1; k <= n; k++) right.push(a + delta * ((k - 0.5) / n));
-  return [left, right];
-}
 
 // The x in the window that lands furthest from L. On a tie the left side wins
 // with the point nearest a, which is the most convincing one to show.
@@ -497,7 +458,7 @@ function EpsilonDelta({ scenarios }: { scenarios: Scenario[] }) {
         <div className="space-y-4">
           {s.rules && (
             <div>
-              <p className="mb-2 text-[11px] uppercase tracking-[0.09em] text-[#8a8c86]">Choose δ</p>
+              <p className="mb-2 text-[11px] uppercase tracking-[0.09em] text-[#8a8c86]">Choose <span className="normal-case">δ</span></p>
               <div className="flex flex-wrap gap-1.5">
                 {s.rules.map((r, i) => (
                   <button

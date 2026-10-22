@@ -286,3 +286,21 @@ code[data-line-numbers-max-digits="3"]>[data-line]::before {
     transform: translateY(3px) scale(0.98);
   }
 }
+
+/* Negation stepper: the piece that just flipped */
+.neg-flip {
+  display: inline-block;
+  padding: 0 3px;
+  border-radius: 6px;
+  background-color: rgba(246, 217, 180, 0.6);
+  box-shadow: inset 0 0 0 1px rgba(199, 154, 111, 0.45);
+  animation: neg-flip-in 0.45s ease-out;
+}
+
+@keyframes neg-flip-in {
+  from {
+    background-color: rgba(246, 217, 180, 0);
+    box-shadow: inset 0 0 0 1px rgba(199, 154, 111, 0);
+    transform: translateY(-4px);
+  }
+}

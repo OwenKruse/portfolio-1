@@ -1,0 +1,263 @@
+---
+title: "Negating Limits: Proving a Limit Fails, in Color"
+publishedAt: "2026-10-22"
+summary: "A follow-up to my epsilon-delta post. This is a color-coded, visual walkthrough of negating the limit definition, which I wrote to understand how to prove a limit is wrong or doesn't exist."
+image: "/blog/negating-limits.png"
+hero: false
+tips:
+  hidden-for-all:
+    q: |-
+      Where did "for all $x$" come from?
+    a: |-
+      It was there all along. "Whenever $0 < |x - \ca{a}| < \del$, we have $|f(x) - \cL{L}| < \eps$" is a promise about **every** $x$ in the window.
+
+      Most textbooks leave it unwritten. You have to write it out before negating, because negation turns it into "there exists an $x$," which is the whole proof.
+  and-not-implies:
+    q: |-
+      Why does the arrow turn into "and"?
+    a: |-
+      "If P then Q" is only false in one situation: P is true and Q is false. So "not (P implies Q)" means "P and not Q."
+
+      Here that reads: $\cbad{x}$ **is** in the window, **and** $f(\cbad{x})$ is **not** in the band.
+  you-pick-eps:
+    q: |-
+      Why do I get to pick $\eps$ now?
+    a: |-
+      Negation flips "for every $\eps$" into "there exists an $\eps$." You only need **one** band the other side can't answer, so you choose it.
+
+      Choose a small one. A small band is harder for the curve to stay inside, which makes your job easier.
+  why-half-gap:
+    q: |-
+      Why half the gap?
+    a: |-
+      Near $\ca{2}$, $f$ heads to $5$, which is $1$ away from the claimed $\cL{4}$. If $\eps$ is smaller than that gap, the band around $\cL{4}$ can't reach $5$, so points close to $\ca{2}$ land outside it.
+
+      Any $\eps$ under the gap works eventually. Half the gap leaves slack on both sides, so points on either side of $\ca{a}$ escape once $\del$ is small. It's just the safe default.
+  arbitrary-delta:
+    q: |-
+      Why can't I pick $\del$ too?
+    a: |-
+      The negation says "for **every** $\del$." The other side picks it, and you have to answer whatever they pick.
+
+      So you treat $\del$ as an unknown positive number and never assume anything else about it, just like $\eps$ in a normal limit proof.
+  x-uses-delta:
+    q: |-
+      Is $\cbad{x}$ allowed to depend on $\del$?
+    a: |-
+      Yes. In the negation, "there exists $\cbad{x}$" comes **after** "for every $\del$," so $\cbad{x}$ can use $\del$, and $\eps$ too.
+
+      It's the mirror image of the original proof, where $\del$ got to depend on $\eps$ because it came after it.
+  why-half-delta:
+    q: |-
+      Why $\frac{\del}{2}$ and not $\del$?
+    a: |-
+      The window is open. $\cbad{x}$ needs $|\cbad{x} - \ca{a}| < \del$ **strictly**, so $\ca{a} + \del$ sits on the edge, outside the window. $\cbad{x} = \ca{a}$ is out too, because of the $0 <$.
+
+      Any fraction of $\del$ strictly between $0$ and $1$ works. $\frac{1}{2}$ is just tidy.
+  every-l:
+    q: |-
+      Why do I have to handle every $\cL{L}$?
+    a: |-
+      "The limit does not exist" means there's **no number** $\cL{L}$ the function approaches. So you prove "the limit isn't $\cL{L}$" for an $\cL{L}$ you know nothing about.
+
+      If you only beat $\cL{L} = 0$, someone can still claim the limit is $0.3$.
+  case-split:
+    q: |-
+      Is a case split allowed?
+    a: |-
+      Yes. $\cbad{x}$ only has to exist for each situation, and it can depend on everything chosen before it: $\cL{L}$, $\eps$ and $\del$. "If $\cL{L} \ge 0$ use this $\cbad{x}$, otherwise use that one" is a perfectly good rule.
+  when-done:
+    q: |-
+      When am I done?
+    a: |-
+      When your $\cbad{x}$ passes **both** checks, with $\del$ (and $\cL{L}$, if the limit doesn't exist) left completely general:
+
+      $0 < |\cbad{x} - \ca{a}| < \del$, so it's in the window, and $|f(\cbad{x}) - \cL{L}| \ge \eps$, so it escapes the band.
+
+      The first check is the one people forget. If your $\cbad{x}$ only works for some $\del$, you're not done. Switch sides, or cap it.
+  one-is-enough:
+    q: |-
+      Why is one bad $\cbad{x}$ enough?
+    a: |-
+      The original definition promised that **every** $x$ in the window lands in the band. A single $\cbad{x}$ that doesn't is a counterexample to "every." You still have to find one for every $\del$, though.
+  plug-in:
+    q: |-
+      Can't I just plug in $x = \ca{a}$?
+    a: |-
+      Not as a proof. The definition never looks at $x = \ca{a}$ (that's what the $0 <$ is for), so $f(\ca{a})$ can be anything, or undefined.
+
+      Plugging in is a fine way to **guess** where $f$ is heading when $f$ is continuous, like $3x - 1$. But the guess is scratch work. The proof is the $\eps$, $\del$ and $\cbad{x}$.
+---
+
+In my [epsilon-delta post](/blog/proving-epsilon-delta-limits), the last section said that to show a limit is *not* $\cL{L}$, you "flip every quantifier." I wrote that sentence and then realized I couldn't actually do it. I knew the rule, but when I sat down to prove that a limit doesn't exist, I didn't know what to pick first, what I was allowed to choose, or when I was finished.
+
+So this is the follow-up. I wrote it to understand the process of negating a limit and proving that a limit fails. Like last time, everything is color-coded and nearly every idea has a graph you can drag around.
+
+## Same colors, plus one
+
+The colors from the last post carry over, with one addition:
+
+- $\eps$ is **orange**: the band around the limit.
+- $\del$ is **blue**: the window around $\ca{a}$.
+- $\cL{L}$ is **green**: the limit someone is claiming.
+- $\ca{a}$ is **purple**: the point $x$ approaches.
+- $\cbad{x}$ is **pink**: the *witness*, a single point you pick that escapes the band.
+
+Dotted underlines answer common questions, like [when you're finished](#tip:when-done). Hover over them, or tap on a phone.
+
+## Negating the definition
+
+Here's the definition again, with one change. I've written out the "for every $x$" that's usually [left hidden](#tip:hidden-for-all):
+
+$$
+\forall\, \eps > 0\ \ \exists\, \del > 0\ \ \tip{hidden-for-all}{\forall\, x}:\ \ 0 < |x - \ca{a}| < \del \implies |f(x) - \cL{L}| < \eps.
+$$
+
+To negate it, put a $\cbad{\neg}$ ("not") in front and push it to the right. Every time it passes a piece, that piece flips. Step through it:
+
+{{embed:negation-steps}}
+
+Here's where it ends up. This is the statement you prove to show that the limit is not $\cL{L}$:
+
+$$
+\tip{you-pick-eps}{\exists\, \eps > 0}\ \ \forall\, \del > 0\ \ \exists\, \cbad{x}:\ \ 0 < |\cbad{x} - \ca{a}| < \del \ \tip{and-not-implies}{\text{ and }}\ |f(\cbad{x}) - \cL{L}| \ge \eps.
+$$
+
+In plain English:
+
+| Piece | In plain English |
+| --- | --- |
+| $\exists\, \eps > 0$ | There's some tolerance around $\cL{L}$ |
+| $\forall\, \del > 0$ | such that no matter how small a window someone draws around $\ca{a}$, |
+| $\exists\, \cbad{x}$ | you can find a point |
+| $0 < \lvert \cbad{x} - \ca{a} \rvert < \del$ | inside that window (and not at $\ca{a}$ itself) |
+| $\lvert f(\cbad{x}) - \cL{L} \rvert \ge \eps$ | where $f$ lands outside the band. |
+
+## The game, with the roles swapped
+
+What made this click for me was looking at **who picks what**. The negation keeps the same three moves as the original game but hands them to the other player. Now you're the skeptic.
+
+{{embed:negation-turns}}
+
+A few things fall out of this right away:
+
+- **You pick $\eps$ and $\cbad{x}$.** The other side only gets $\del$.
+- **Order still matters.** $\cbad{x}$ comes after $\del$, so your $\cbad{x}$ is [allowed to depend on $\del$](#tip:x-uses-delta). Last time $\del$ depended on $\eps$. Now $\cbad{x}$ depends on $\del$.
+- **[One bad point is enough](#tip:one-is-enough)**, but you need one for *every* window, no matter how small.
+
+## The process: pick a band, then build a point
+
+The scratch work for a negation has two moves instead of one:
+
+1. **Pick $\eps$.** Figure out where $f$ is actually heading near $\ca{a}$, which [isn't the same as plugging in](#tip:plug-in). Then pick an $\eps$ smaller than the gap between that and $\cL{L}$. Half the gap is a safe default.
+2. **Build $\cbad{x}$ from $\del$.** Write a formula for $\cbad{x}$ in terms of $\del$ that always lands inside the window but outside the band. Something like $\ca{a} + \frac{\del}{2}$ is the usual starting point.
+
+Then the proof checks your $\cbad{x}$ against an arbitrary $\del$.
+
+## Example 1: a wrong limit
+
+Prove that
+
+$$
+\lim_{x \to \ca{2}} (3x - 1) \ne \cL{4}.
+$$
+
+### Scratch work
+
+Near $\ca{2}$, $3x - 1$ heads to $5$, which is $1$ away from the claimed $\cL{4}$. Half that gap gives [$\eps = \frac{1}{2}$](#tip:why-half-gap).
+
+For the witness, step halfway into the window on the right: $\cbad{x} = \ca{2} + \frac{\del}{2}$. Then
+
+$$
+f(\cbad{x}) - \cL{4} = 3\left(\ca{2} + \tfrac{\del}{2}\right) - 1 - 4 = 1 + \tfrac{3\del}{2},
+$$
+
+which is at least $1$ for every $\del$. That's always at least $\eps = \frac{1}{2}$, so this $\cbad{x}$ escapes no matter what $\del$ the opponent picks.
+
+Try it below. The strip under the status message checks **every** $\del$ at once: pink means your $\cbad{x}$ escapes for that $\del$. You need pink all the way across.
+
+{{embed:negation-wrong-limit}}
+
+Two things worth trying:
+
+- **Switch to $\cbad{x} = \ca{2} - \frac{\del}{2}$.** On the left, $f$ sits *below* $5$, closer to $\cL{4}$. That rule only escapes while $\del \le \frac{1}{3}$, so the right end of the strip goes gray. A witness that only beats small windows isn't a proof.
+- **Switch to $\eps = 2$.** The band around $\cL{4}$ now reaches past $5$, so small windows sit entirely inside it. The left end of the strip goes gray: your $\eps$ was too generous.
+
+### The proof
+
+> [Let $\eps = \frac{1}{2}$](#tip:you-pick-eps). [Let $\del > 0$ be arbitrary](#tip:arbitrary-delta), and choose [$\cbad{x} = \ca{2} + \frac{\del}{2}$](#tip:x-uses-delta). Then
+>
+> $$
+> 0 < |\cbad{x} - \ca{2}| = \tip{why-half-delta}{\tfrac{\del}{2} < \del},
+> $$
+>
+> so $\cbad{x}$ is in the window, and
+>
+> $$
+> |f(\cbad{x}) - \cL{4}| = 1 + \tfrac{3\del}{2} > \tfrac{1}{2} = \eps.
+> $$
+>
+> [Every $\del$ has a point that escapes](#tip:when-done), so the limit is not $\cL{4}$. $\blacksquare$
+
+## Example 2: a limit that doesn't exist
+
+"The limit doesn't exist" is a bigger claim than "the limit isn't $\cL{4}$." It means the limit isn't $\cL{L}$ for [**any** number $\cL{L}$](#tip:every-l). So the proof starts with "let $\cL{L}$ be any number" and has to work no matter what $\cL{L}$ is.
+
+Prove that
+
+$$
+\lim_{x \to \ca{0}} \frac{x}{|x|} \ \text{ does not exist.}
+$$
+
+### Scratch work
+
+$\frac{x}{|x|}$ is $-1$ for every negative $x$ and $1$ for every positive $x$. The jump between them is $2$, so take half: $\eps = 1$.
+
+Every window around $\ca{0}$ contains points from both sides, so you can always land on $-1$ or on $1$. Which one should you pick? A claimed $\cL{L}$ can't be within $1$ of both $-1$ and $1$, so one of them always escapes. It depends on where $\cL{L}$ is:
+
+- If $\cL{L} \ge 0$, then $-1$ is at least $1$ away. Use a negative point, $\cbad{x} = -\frac{\del}{2}$.
+- If $\cL{L} < 0$, then $1$ is more than $1$ away. Use a positive point, $\cbad{x} = \frac{\del}{2}$.
+
+That's a [case split](#tip:case-split), and it's completely allowed. Below, the second strip checks every $\cL{L}$ someone could claim. Each one-sided rule beats only half of them. The split beats them all.
+
+{{embed:negation-jump}}
+
+### The proof
+
+> [Let $\cL{L}$ be any number](#tip:every-l). Let $\eps = 1$, and let $\del > 0$ be arbitrary.
+>
+> - If $\cL{L} \ge 0$, choose $\cbad{x} = -\frac{\del}{2}$. Then $f(\cbad{x}) = -1$, so $|f(\cbad{x}) - \cL{L}| = 1 + \cL{L} \ge 1 = \eps$.
+> - If $\cL{L} < 0$, choose $\cbad{x} = \frac{\del}{2}$. Then $f(\cbad{x}) = 1$, so $|f(\cbad{x}) - \cL{L}| = 1 - \cL{L} > 1 = \eps$.
+>
+> Either way, $0 < |\cbad{x} - \ca{0}| = \frac{\del}{2} < \del$ and $|f(\cbad{x}) - \cL{L}| \ge \eps$. So no number is the limit, and $\lim_{x \to \ca{0}} \frac{x}{|x|}$ does not exist. $\blacksquare$
+
+## Example 3: a limit that never settles down
+
+The jump had two clean sides. $\sin\left(\frac{1}{x}\right)$ is stranger: as $x \to 0$ it swings between $1$ and $-1$ faster and faster, and never commits to anything. Press play below and the view follows the window down. Every window, however small, still contains full swings.
+
+{{embed:negation-oscillation}}
+
+The proof has the same shape as the jump. The only new part is finding a peak and a trough inside $(0, \del)$. $\sin(\theta) = 1$ at $\theta = \frac{\pi}{2} + 2\pi n$ and $-1$ at $\theta = \frac{3\pi}{2} + 2\pi n$, so flip those over to get $x$-values, and make $n$ big enough that they fit in the window.
+
+> Let $\cL{L}$ be any number, let $\eps = \frac{1}{2}$, and let $\del > 0$ be arbitrary. Pick a whole number $n > \frac{1}{2\pi\del}$, and set
+>
+> $$
+> \cbad{x_{\text{peak}}} = \frac{1}{\frac{\pi}{2} + 2\pi n}, \qquad \cbad{x_{\text{trough}}} = \frac{1}{\frac{3\pi}{2} + 2\pi n}.
+> $$
+>
+> Both are positive and less than $\frac{1}{2\pi n} < \del$, so both are in the window. $\sin\left(\frac{1}{x}\right)$ is $1$ at the peak and $-1$ at the trough.
+>
+> - If $\cL{L} \ge 0$, use the trough: $|{-1} - \cL{L}| = 1 + \cL{L} \ge 1 > \eps$.
+> - If $\cL{L} < 0$, use the peak: $|1 - \cL{L}| = 1 - \cL{L} > 1 > \eps$.
+>
+> So $\lim_{x \to \ca{0}} \sin\left(\frac{1}{x}\right)$ does not exist. $\blacksquare$
+
+## The template I use for negations
+
+1. **Decide the claim.** Showing the limit isn't one $\cL{L}$? Or that it doesn't exist at all, so you have to beat [every $\cL{L}$](#tip:every-l)?
+2. **Find the gap.** Where does $f$ actually go near $\ca{a}$? Or which two values does it keep bouncing between?
+3. **Pick $\eps$** at most half that gap.
+4. **Build $\cbad{x}$ from $\del$:** $\ca{a} \pm \frac{\del}{2}$, a peak inside the window, whatever lands outside the band. [Split into cases](#tip:case-split) on $\cL{L}$ if one rule can't beat every $\cL{L}$.
+5. **Check both conditions** for an arbitrary $\del$: $0 < |\cbad{x} - \ca{a}| < \del$ and $|f(\cbad{x}) - \cL{L}| \ge \eps$. [Then you're done](#tip:when-done).
+
+Writing the first post taught me the original game. Writing this one taught me that negation isn't a new idea. It's the same game with the players swapped. Once I saw that I was the one picking $\eps$ and $\cbad{x}$, proofs that limits fail stopped feeling like tricks and started feeling like the obvious move.

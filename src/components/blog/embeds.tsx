@@ -5,6 +5,9 @@ import {
   EpsilonDeltaQuadratic,
 } from "@/components/blog/epsilon-delta";
 import { EulerExplorer } from "@/components/blog/euler-explorer";
+import { NegationSteps } from "@/components/blog/negation-steps";
+import { NegationTurns } from "@/components/blog/negation-turns";
+import { NegationJump, NegationOscillation, NegationWrongLimit } from "@/components/blog/negation-witness";
 import { ProofLadderLinear, ProofLadderQuadratic } from "@/components/blog/proof-ladder";
 
 // Interactive components a post can drop in with a line like
@@ -17,6 +20,11 @@ const EMBEDS: Record<string, React.ComponentType> = {
   "epsilon-delta-failure": EpsilonDeltaFailure,
   "proof-ladder-linear": ProofLadderLinear,
   "proof-ladder-quadratic": ProofLadderQuadratic,
+  "negation-steps": NegationSteps,
+  "negation-turns": NegationTurns,
+  "negation-wrong-limit": NegationWrongLimit,
+  "negation-jump": NegationJump,
+  "negation-oscillation": NegationOscillation,
 };
 
 const EMBED_PATTERN = /<p>\{\{embed:([a-z0-9-]+)\}\}<\/p>/g;
