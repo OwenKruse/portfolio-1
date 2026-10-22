@@ -1,0 +1,192 @@
+---
+title: "Proving Limits With ε and δ, in Color"
+publishedAt: "2026-10-22"
+summary: "A color-coded, visual walkthrough of epsilon-delta limit proofs. I wrote this to finally understand the process of proving a limit, not just memorize the template."
+image: "/blog/epsilon-delta.png"
+hero: false
+---
+
+The epsilon-delta definition of a limit was the first thing in calculus I could recite without understanding. I could copy the template: "Let $\eps > 0$. Choose $\del = \ldots$ Then $\ldots$" But if you asked me *why* $\del = \frac{\eps}{3}$, or where that $3$ came from, I'd point at some scratch work and shrug.
+
+So I wrote this post to work through the process properly. I wanted to understand proving limits like this well enough that the template felt obvious instead of magic. Color-coding every symbol and building graphs I could drag around is what finally got me there, so that's what this post is. If you're stuck in the same spot, I hope it helps you too.
+
+## The color key
+
+Every symbol keeps the same color for the whole post, in the equations and in the graphs:
+
+- $\eps$ (epsilon) is **orange**. It's how close $f(x)$ has to get to the limit. Think of it as the challenge.
+- $\del$ (delta) is **blue**. It's how close $x$ has to be to $\ca{a}$. Think of it as your response.
+- $\cL{L}$ is **green**. It's the limit you're claiming.
+- $\ca{a}$ is **purple**. It's the point $x$ is approaching.
+
+## The definition
+
+Writing
+
+$$
+\lim_{x \to \ca{a}} f(x) = \cL{L}
+$$
+
+means
+
+$$
+\forall\, \eps > 0,\ \ \exists\, \del > 0 \ \text{ such that } \ 0 < |x - \ca{a}| < \del \implies |f(x) - \cL{L}| < \eps.
+$$
+
+That line used to look like noise to me. Broken into pieces, it's one sentence:
+
+| Piece | In plain English |
+| --- | --- |
+| $\forall\, \eps > 0$ | No matter how small a tolerance someone picks around $\cL{L}$, |
+| $\exists\, \del > 0$ | you can find a window around $\ca{a}$ |
+| $0 < \lvert x - \ca{a} \rvert < \del$ | so that whenever $x$ is inside that window (but not at $\ca{a}$ itself), |
+| $\lvert f(x) - \cL{L} \rvert < \eps$ | $f(x)$ lands within $\eps$ of $\cL{L}$. |
+
+What made it click for me was reading it as a game. A skeptic picks an $\eps$, a horizontal band around $\cL{L}$. You answer with a $\del$, a vertical window around $\ca{a}$. You win the round if the graph inside your window stays inside their band. Proving the limit means showing you can win **every** round, no matter how thin they make the band.
+
+Here's one round, for $\sqrt{x}$ near $\ca{4}$. Drag the orange $\eps$ handle on the right to set the challenge and the blue $\del$ handle on top to answer it. The part of the curve inside your window turns pink anywhere it escapes the band.
+
+{{embed:epsilon-delta-game}}
+
+A few things I didn't really get until I played with this:
+
+- **Smaller $\del$ never hurts.** If a window works, any narrower window works too. So you never need the *best* $\del$, just *one* that's small enough. That took a lot of pressure off.
+- **The hollow dot is on purpose.** The $0 < |x - \ca{a}|$ part of the definition means $x = \ca{a}$ itself doesn't count. Limits are about what $f$ does as it *approaches* $\ca{a}$, not what happens when it gets there.
+- **The worse side decides.** The curve is steeper on the left of $\ca{4}$, so the left edge of the window escapes first. Your $\del$ has to work for both sides at once.
+
+## The process: two passes in opposite directions
+
+This is the part nobody spelled out for me: **you figure out an epsilon-delta proof in the opposite order from how you write it.**
+
+1. **Scratch work, backwards.** Start with what you want, $|f(x) - \cL{L}| < \eps$, and do algebra on it until it looks like $|x - \ca{a}| < \text{something}$. That something is your $\del$.
+2. **The proof, forwards.** Start from $|x - \ca{a}| < \del$ and climb back up to $|f(x) - \cL{L}| < \eps$.
+
+The scratch work never shows up in the final proof. That's exactly why finished proofs look like $\del$ was pulled out of thin air: the part where you found it got erased.
+
+## Example 1: a line
+
+Prove that
+
+$$
+\lim_{x \to \ca{2}} (3x - 1) = \cL{5}.
+$$
+
+### Scratch work
+
+Start from the goal and simplify until $|x - \ca{2}|$ is alone on the left:
+
+$$
+\begin{aligned}
+|(3x - 1) - \cL{5}| &< \eps \\
+|3x - 6| &< \eps \\
+3\,|x - \ca{2}| &< \eps \\
+|x - \ca{2}| &< \cdel{\frac{\eps}{3}}
+\end{aligned}
+$$
+
+The last line has exactly the shape the definition wants, so choose $\del = \frac{\eps}{3}$. Notice the color: $\cdel{\frac{\eps}{3}}$ is blue on the outside with orange inside. **$\del$ is built out of $\eps$.** That's the whole idea. Your response depends on their challenge.
+
+Here's the same chain as a ladder. Scratch work reads it top to bottom. The proof reads it bottom to top.
+
+{{embed:proof-ladder-linear}}
+
+### The proof
+
+> Let $\eps > 0$. Choose $\del = \frac{\eps}{3}$. Suppose $0 < |x - \ca{2}| < \del$. Then
+>
+> $$
+> |(3x - 1) - \cL{5}| = 3\,|x - \ca{2}| < 3\,\del = 3 \cdot \cdel{\frac{\eps}{3}} = \eps.
+> $$
+>
+> So $|f(x) - \cL{5}| < \eps$ whenever $0 < |x - \ca{2}| < \del$, which proves the limit is $\cL{5}$. $\blacksquare$
+
+The proof is just the ladder climbed upward, with $\cdel{\frac{\eps}{3}}$ substituted in at the moment it's needed.
+
+Now watch the rule work. Press play and $\eps$ shrinks. With $\del = \frac{\eps}{3}$ selected, the window shrinks with it and the curve never leaves the box. The box even keeps its shape: the line has slope $3$, so the window always needs to be exactly three times narrower than the band. **That's where the $3$ came from.**
+
+{{embed:epsilon-delta-linear}}
+
+## Example 2: a curve, and the trick that confused me most
+
+Prove that
+
+$$
+\lim_{x \to \ca{2}} x^2 = \cL{4}.
+$$
+
+### Scratch work
+
+Same start. Factor so $|x - \ca{2}|$ shows up:
+
+$$
+|x^2 - \cL{4}| = |x - \ca{2}| \cdot \cbad{|x + 2|}.
+$$
+
+The $|x - \ca{2}|$ part is under control, since that's what $\del$ limits. The pink $\cbad{|x + 2|}$ is the problem. It changes with $x$, and $\del$ isn't allowed to depend on $x$. It can only depend on $\eps$.
+
+My first instinct was: near $x = 2$, $|x + 2|$ is about $4$, so pick $\del = \frac{\eps}{4}$. Try that below. With $\del = \frac{\eps}{4}$ selected, the right side of the parabola climbs out of the band, because just to the right of $2$, $|x + 2|$ is a bit *more* than $4$.
+
+{{embed:epsilon-delta-quadratic}}
+
+The fix is to put $x$ on a leash first. Promise that $\del$ will be at most $\cdel{1}$. Then
+
+$$
+|x - \ca{2}| < \cdel{1} \implies 1 < x < 3 \implies 3 < x + 2 < 5 \implies \cbad{|x + 2|} < 5.
+$$
+
+Now the troublesome factor is stuck below $5$, so
+
+$$
+|x^2 - \cL{4}| = |x - \ca{2}| \cdot \cbad{|x + 2|} < 5\,|x - \ca{2}|,
+$$
+
+and that's less than $\eps$ as long as $|x - \ca{2}| < \frac{\eps}{5}$.
+
+So $\del$ has made two promises: it's at most $\cdel{1}$ (so the bound $|x + 2| < 5$ is true), and it's at most $\frac{\eps}{5}$ (so the inequality finishes). The smaller of the two keeps both promises:
+
+$$
+\del = \min\!\left(\cdel{1}, \frac{\eps}{5}\right).
+$$
+
+That $\min$ was the single most confusing part of these proofs for me. It turns out it's not a trick at all. It's just two requirements, and you take whichever one is stricter. Go back to the graph above, switch to $\min(1, \frac{\eps}{5})$ and press play. It holds for every $\eps$. Above $\eps = 5$, the $1$ takes over and $\del$ stops growing.
+
+{{embed:proof-ladder-quadratic}}
+
+### The proof
+
+> Let $\eps > 0$. Choose $\del = \min\!\left(\cdel{1}, \frac{\eps}{5}\right)$, and suppose $0 < |x - \ca{2}| < \del$.
+>
+> Since $\del \le \cdel{1}$, we have $|x - \ca{2}| < 1$, so $1 < x < 3$ and $|x + 2| < 5$. Since $\del \le \frac{\eps}{5}$,
+>
+> $$
+> |x^2 - \cL{4}| = |x - \ca{2}|\,|x + 2| < \del \cdot 5 \le \frac{\eps}{5} \cdot 5 = \eps.
+> $$
+>
+> So $\lim_{x \to \ca{2}} x^2 = \cL{4}$. $\blacksquare$
+
+## What failure looks like
+
+Seeing proofs fail helped me as much as seeing them work. To show a limit is **not** $\cL{L}$, you flip every quantifier in the definition:
+
+$$
+\exists\, \eps > 0 \ \ \forall\, \del > 0 \ \ \exists\, x: \ \ 0 < |x - \ca{a}| < \del \ \text{ and } \ |f(x) - \cL{L}| \ge \eps.
+$$
+
+In game terms, the skeptic only needs **one** band you can't answer. Below are two ways that happens. Pick an $\eps$ small enough and the panel tells you no $\del$ works at all.
+
+{{embed:epsilon-delta-failure}}
+
+- **Wrong $\cL{L}$:** if someone claims $\lim_{x \to \ca{2}} x^2 = \cL{4.5}$, any $\eps \le 0.5$ wins for the skeptic. The curve near $x = 2$ sits at about $4$, which is outside the band.
+- **A jump:** $\lfloor x \rfloor$ is $0$ just left of $\ca{1}$ and $1$ just right of it. Whatever $\cL{L}$ you guess, an $\eps \le \frac{1}{2}$ catches one side or the other, so the limit doesn't exist.
+
+## The template I actually use now
+
+After working through all of this, the process fits on an index card:
+
+1. **Write the goal:** $|f(x) - \cL{L}| < \eps$.
+2. **Factor out $|x - \ca{a}|$.** Whatever is left over either is a constant (great) or depends on $x$.
+3. **If it depends on $x$, leash it.** Assume $\del \le 1$, figure out the range of $x$ that gives you, and bound the leftover factor by a constant $\cdel{K}$.
+4. **Read off $\del$:** $\del = \min\!\left(1, \frac{\eps}{\cdel{K}}\right)$, or just $\frac{\eps}{\cdel{K}}$ if you didn't need the leash.
+5. **Write the proof forwards:** let $\eps > 0$, choose $\del$, assume $0 < |x - \ca{a}| < \del$, and chain inequalities until you reach $< \eps$.
+
+The template was always right. I just didn't see that every line of it is one move in the game, and that the scratch work is where the real thinking happens. Writing this post, and dragging those bands around until the shapes made sense, is how I got from memorizing the process to understanding it.

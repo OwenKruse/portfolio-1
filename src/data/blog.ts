@@ -1,9 +1,12 @@
 import fs from "fs";
 import matter from "gray-matter";
 import path from "path";
+import { KATEX_MACROS } from "@/data/math-colors";
+import rehypeKatex from "rehype-katex";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeStringify from "rehype-stringify";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
@@ -23,7 +26,9 @@ export async function markdownToHTML(markdown: string) {
   const p = await unified()
     .use(remarkParse)
     .use(remarkGfm)
+    .use(remarkMath)
     .use(remarkRehype)
+    .use(rehypeKatex, { macros: { ...KATEX_MACROS } })
     .use(rehypePrettyCode, {
       // https://rehype-pretty.pages.dev/#usage
       theme: {
@@ -43,10 +48,16 @@ export async function getPost(slug: string) {
   let source = fs.readFileSync(filePath, "utf-8");
   const { content: rawContent, data: metadata } = matter(source);
   const content = await markdownToHTML(rawContent);
+  // Count from the Markdown, since KaTeX turns each formula into dozens of tiny spans.
+  const words = rawContent
+    .replace(/\$\$[\s\S]*?\$\$|\$[^$\n]+\$/g, "math")
+    .split(/\s+/)
+    .filter(Boolean).length;
   return {
     source: content,
     metadata,
     slug,
+    words,
   };
 }
 

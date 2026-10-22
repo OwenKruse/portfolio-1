@@ -3,6 +3,7 @@ import { SiteNav } from "@/components/new/site-nav";
 import { getBlogPosts, getPost } from "@/data/blog";
 import { backgroundFor } from "@/data/project-backgrounds";
 import { DATA } from "@/data/resume";
+import "katex/dist/katex.min.css";
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -12,7 +13,7 @@ import { notFound } from "next/navigation";
 type Params = { params: Promise<{ slug: string }> };
 
 const PROSE =
-  "prose prose-neutral max-w-none text-[17px] leading-[1.75] text-[#2f322e] prose-headings:font-normal prose-headings:tracking-[-0.035em] prose-headings:text-[#111210] prose-h2:mt-14 prose-h2:text-[30px] prose-h3:text-[22px] prose-p:text-[#3a3d39] prose-a:text-[#111210] prose-a:decoration-[#f0c8a2] prose-a:decoration-2 prose-a:underline-offset-4 hover:prose-a:decoration-[#111210] prose-strong:font-semibold prose-strong:text-[#111210] prose-blockquote:border-l-[#f0c8a2] prose-blockquote:font-normal prose-blockquote:not-italic prose-blockquote:text-[#5f655d] prose-code:rounded prose-code:bg-[#f3f2ee] prose-code:px-1.5 prose-code:py-0.5 prose-code:font-normal prose-code:before:content-none prose-code:after:content-none prose-pre:rounded-[14px] prose-pre:border prose-pre:border-black/[0.06] prose-pre:bg-[#fbfbfa] prose-li:marker:text-[#b0b2ab] prose-hr:border-black/[0.08]";
+  "prose prose-neutral max-w-none text-[17px] leading-[1.75] text-[#2f322e] prose-headings:font-normal prose-headings:tracking-[-0.035em] prose-headings:text-[#111210] prose-h2:mt-14 prose-h2:text-[30px] prose-h3:text-[22px] prose-p:text-[#3a3d39] prose-a:text-[#111210] prose-a:decoration-[#f0c8a2] prose-a:decoration-2 prose-a:underline-offset-4 hover:prose-a:decoration-[#111210] prose-strong:font-semibold prose-strong:text-[#111210] prose-blockquote:border-l-[#f0c8a2] prose-blockquote:font-normal prose-blockquote:not-italic prose-blockquote:text-[#5f655d] prose-blockquote:rounded-r-[14px] prose-blockquote:bg-[#fbfbfa] prose-blockquote:py-1 [&_blockquote_p]:before:content-none [&_blockquote_p]:after:content-none prose-code:rounded prose-code:bg-[#f3f2ee] prose-code:px-1.5 prose-code:py-0.5 prose-code:font-normal prose-code:before:content-none prose-code:after:content-none prose-pre:rounded-[14px] prose-pre:border prose-pre:border-black/[0.06] prose-pre:bg-[#fbfbfa] prose-li:marker:text-[#b0b2ab] prose-hr:border-black/[0.08]";
 
 function formatDate(date: string) {
   return new Date(`${date}T00:00:00`).toLocaleDateString("en-US", {
@@ -63,8 +64,7 @@ export default async function BlogPost({ params }: Params) {
   const post = await loadPost(slug);
   if (!post) notFound();
 
-  const words = post.source.replace(/<[^>]+>/g, " ").split(/\s+/).length;
-  const minutes = Math.max(1, Math.round(words / 230));
+  const minutes = Math.max(1, Math.round(post.words / 230));
 
   return (
     <main className="min-h-[100dvh] overflow-x-clip bg-white text-[#111210] antialiased selection:bg-[#f6d9b4]">

@@ -1,9 +1,22 @@
+import {
+  EpsilonDeltaFailure,
+  EpsilonDeltaGame,
+  EpsilonDeltaLinear,
+  EpsilonDeltaQuadratic,
+} from "@/components/blog/epsilon-delta";
 import { EulerExplorer } from "@/components/blog/euler-explorer";
+import { ProofLadderLinear, ProofLadderQuadratic } from "@/components/blog/proof-ladder";
 
 // Interactive components a post can drop in with a line like
 // {{embed:euler-explorer}} on its own in the Markdown.
 const EMBEDS: Record<string, React.ComponentType> = {
   "euler-explorer": EulerExplorer,
+  "epsilon-delta-game": EpsilonDeltaGame,
+  "epsilon-delta-linear": EpsilonDeltaLinear,
+  "epsilon-delta-quadratic": EpsilonDeltaQuadratic,
+  "epsilon-delta-failure": EpsilonDeltaFailure,
+  "proof-ladder-linear": ProofLadderLinear,
+  "proof-ladder-quadratic": ProofLadderQuadratic,
 };
 
 const EMBED_PATTERN = /<p>\{\{embed:([a-z0-9-]+)\}\}<\/p>/g;

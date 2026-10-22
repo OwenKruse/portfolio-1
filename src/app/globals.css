@@ -240,3 +240,14 @@ code[data-line-numbers-max-digits="2"]>[data-line]::before {
 code[data-line-numbers-max-digits="3"]>[data-line]::before {
   width: 3rem;
 }
+
+/* KaTeX in blog posts: long equations scroll instead of widening the page */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
+
+.katex {
+  font-size: 1.1em;
+}
