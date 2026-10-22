@@ -1,5 +1,6 @@
 "use client";
 
+import { HashLink } from "@/components/new/hash-link";
 import { WaveLogo } from "@/components/new/waveform";
 import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
@@ -79,7 +80,7 @@ export function SiteNav() {
             : "max-w-[1248px] rounded-none border-transparent bg-transparent py-3 pl-0 pr-0",
         )}
       >
-        <Link
+        <HashLink
           href="/#top"
           aria-label={DATA.name}
           className="flex items-center text-[17px] font-semibold tracking-[-0.03em] text-[#111210]"
@@ -93,17 +94,17 @@ export function SiteNav() {
           </Collapsible>
           <span aria-hidden>{last[0]}</span>
           <Collapsible open={!scrolled}>{last.slice(1)}</Collapsible>
-        </Link>
+        </HashLink>
 
         <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
           {LINKS.map((link) => (
-            <Link
+            <HashLink
               key={link.href}
               href={link.href}
               className="rounded-full px-4 py-1.5 text-[15px] font-medium text-[#6f7177] transition-colors duration-200 hover:text-[#111210]"
             >
               {link.label}
-            </Link>
+            </HashLink>
           ))}
         </nav>
 
@@ -139,14 +140,14 @@ export function SiteNav() {
           )}
         >
           {LINKS.map((link) => (
-            <Link
+            <HashLink
               key={link.href}
               href={link.href}
               onClick={() => setMenuOpen(false)}
               className="block rounded-xl px-4 py-3 text-[15px] font-medium text-[#111210] transition-colors hover:bg-black/[0.04]"
             >
               {link.label}
-            </Link>
+            </HashLink>
           ))}
           <Link
             href={DATA.contact.social.GitHub.url}

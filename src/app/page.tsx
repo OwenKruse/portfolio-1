@@ -1,3 +1,4 @@
+import { HashLink } from "@/components/new/hash-link";
 import { ProjectCarousel } from "@/components/new/project-carousel";
 import { Reveal } from "@/components/new/reveal";
 import { SiteNav } from "@/components/new/site-nav";
@@ -108,7 +109,7 @@ export default function Page() {
             <p className="mt-6 max-w-[520px] text-[18px] leading-[1.55] text-[#5f655d]">
               software engineer and computer science student
             </p>
-            <Link
+            <HashLink
               href="#work"
               className="group mt-9 inline-flex items-center gap-2.5 rounded-full py-1.5 pr-3 text-[15px] font-medium text-[#111210]"
             >
@@ -122,7 +123,7 @@ export default function Page() {
                 </svg>
               </span>
               See my work
-            </Link>
+            </HashLink>
           </Reveal>
 
           <Reveal delay={0.12} className="relative">
@@ -458,12 +459,12 @@ export default function Page() {
                   </li>
                 ))}
                 <li>
-                  <Link
+                  <HashLink
                     href="#top"
                     className="transition-colors hover:text-white"
                   >
                     Back to top ↑
-                  </Link>
+                  </HashLink>
                 </li>
               </ul>
             </div>
