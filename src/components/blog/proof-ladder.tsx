@@ -1,10 +1,10 @@
-import { KATEX_MACROS, MATH_COLORS as C } from "@/data/math-colors";
+import { KATEX_MACROS, KATEX_TIP_OPTIONS, MATH_COLORS as C } from "@/data/math-colors";
 import katex from "katex";
 
 type Rung = { tex: string; note?: string };
 
 const tex = (source: string) =>
-  katex.renderToString(source, { macros: { ...KATEX_MACROS }, throwOnError: false });
+  katex.renderToString(source, { macros: { ...KATEX_MACROS }, ...KATEX_TIP_OPTIONS, throwOnError: false });
 
 // One chain of inequalities read two ways: down while you hunt for δ, up when you write the proof.
 function ProofLadder({ rungs, result }: { rungs: Rung[]; result: string }) {
@@ -66,7 +66,7 @@ export function ProofLadderLinear() {
         { tex: "|(3x - 1) - \\cL{5}| < \\eps", note: "The goal. This is what the definition demands." },
         { tex: "|3x - 6| < \\eps" },
         { tex: "3\\,|x - \\ca{2}| < \\eps", note: "Factor out the 3 so |x − a| shows up." },
-        { tex: "|x - \\ca{2}| < \\cdel{\\dfrac{\\eps}{3}}", note: "This has the shape |x − a| < something. That something is δ." },
+        { tex: "\\tip{when-to-stop}{|x - \\ca{2}| < \\cdel{\\dfrac{\\eps}{3}}}", note: "This has the shape |x − a| < something. That something is δ." },
       ]}
       result={"\\del = \\frac{\\eps}{3}"}
     />
@@ -78,12 +78,12 @@ export function ProofLadderQuadratic() {
     <ProofLadder
       rungs={[
         { tex: "|x^2 - \\cL{4}| < \\eps", note: "The goal." },
-        { tex: "|x - \\ca{2}|\\,\\cbad{|x + 2|} < \\eps", note: "|x − 2| is in our control. |x + 2| changes with x, so it needs a bound." },
+        { tex: "|x - \\ca{2}|\\,\\tip{delta-no-x}{\\cbad{|x + 2|}} < \\eps", note: "|x − 2| is in our control. |x + 2| changes with x, so it needs a bound." },
         {
           tex: "|x - \\ca{2}| \\cdot \\cdel{5} < \\eps",
           note: "If we promise δ ≤ 1, then 1 < x < 3, so |x + 2| < 5.",
         },
-        { tex: "|x - \\ca{2}| < \\cdel{\\dfrac{\\eps}{5}}", note: "Now δ also has to be at most ε/5." },
+        { tex: "\\tip{when-to-stop}{|x - \\ca{2}| < \\cdel{\\dfrac{\\eps}{5}}}", note: "Now δ also has to be at most ε/5." },
       ]}
       result={"\\del = \\min\\!\\left(\\cdel{1}, \\frac{\\eps}{5}\\right)"}
     />

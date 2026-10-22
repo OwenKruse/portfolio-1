@@ -4,6 +4,71 @@ publishedAt: "2026-10-22"
 summary: "A color-coded, visual walkthrough of epsilon-delta limit proofs. I wrote this to finally understand the process of proving a limit, not just memorize the template."
 image: "/blog/epsilon-delta.png"
 hero: false
+tips:
+  when-to-stop:
+    q: |-
+      When do I stop the scratch work?
+    a: |-
+      Stop as soon as it reads $|x - \ca{a}| < \text{something}$, where the right side has **only $\eps$ and plain numbers** in it. That right side is your $\del$.
+
+      Check two things: $|x - \ca{a}|$ is alone on the left, and there's **no $x$** anywhere on the right. If an $x$ is still hanging around, like the $|x + 2|$ in Example 2, you're not done yet. Bound it first.
+
+      You aren't solving for $\eps$. It's given. You're solving for $\del$ in terms of $\eps$, and you don't need the best possible one.
+  quantifier-order:
+    q: |-
+      Why does the order "for all $\eps$, there exists $\del$" matter?
+    a: |-
+      $\eps$ comes first, so $\del$ gets to depend on it. That's what makes $\del = \frac{\eps}{3}$ allowed.
+
+      Swap them to "there exists $\del$ for all $\eps$" and you'd need one window that works for every band at once, even impossibly thin ones. That's a much stronger claim and almost always false.
+  punctured:
+    q: |-
+      Why the $0 <$ at the front?
+    a: |-
+      It throws out $x = \ca{a}$ itself. A limit only cares about values *near* $\ca{a}$, so $f(\ca{a})$ can be anything, or not exist at all.
+
+      For example, $\frac{x^2 - 4}{x - 2}$ is undefined at $x = 2$, but its limit there is still $4$.
+  best-delta:
+    q: |-
+      Does $\del$ have to be the biggest one that works?
+    a: |-
+      No. Any smaller positive $\del$ works too, so $\frac{\eps}{4}$ or $\frac{\eps}{100}$ would prove the limit just as well. You need **a** $\del$, not the best one. Picking a smaller one is a common way to make the algebra easier.
+  let-epsilon:
+    q: |-
+      Why start with "Let $\eps > 0$" instead of a number?
+    a: |-
+      The claim is about **every** $\eps$. Leaving $\eps$ as an unknown positive number, and never assuming anything else about it, means the argument covers all of them at once. Plugging in $\eps = 0.1$ would only win one round of the game.
+  delta-no-x:
+    q: |-
+      Why can't $\del$ depend on $x$?
+    a: |-
+      Because $\del$ is chosen **before** anyone picks $x$. The definition says there is a $\del$, and then for **every** $x$ in the window something holds.
+
+      A $\del$ built from $x$ would be a window that changes size depending on which point you test, which isn't a window at all.
+  why-one:
+    q: |-
+      Why $1$? Could I use something else?
+    a: |-
+      Any positive number works. $1$ is just convenient. With $\del \le \frac{1}{2}$ instead, you'd get $1.5 < x < 2.5$, so $|x + 2| < 4.5$ and $\del = \min\left(\frac{1}{2}, \frac{\eps}{4.5}\right)$. Different $\del$, equally valid proof.
+
+      Just make sure the leash keeps $x$ away from trouble spots, like somewhere you'd divide by zero.
+  why-min:
+    q: |-
+      Why $\min$ and not $\max$?
+    a: |-
+      $\del$ has to satisfy **both** conditions: $\del \le 1$ and $\del \le \frac{\eps}{5}$. The smaller number is below both. The bigger one breaks whichever condition belongs to the smaller number.
+
+      At $\eps = 10$, for example, $\max$ would give $\del = 2$. That lets $x$ reach $3.9$, where $|x + 2| < 5$ is no longer true.
+  mixed-inequalities:
+    q: |-
+      Is it okay to mix $<$ and $\le$ in one chain?
+    a: |-
+      Yes. If $a < b$ and $b \le c$, then $a < c$. One strict step anywhere in the chain makes the whole thing strict, and strict is what the definition needs at the end: $< \eps$.
+  why-geq:
+    q: |-
+      Why $\ge$ in the negation and not $>$?
+    a: |-
+      The opposite of $< \eps$ is $\ge \eps$. Landing exactly on the edge of the band already counts as a miss, because the definition needs strictly less than $\eps$.
 ---
 
 The epsilon-delta definition of a limit was the first thing in calculus I could recite without understanding. I could copy the template: "Let $\eps > 0$. Choose $\del = \ldots$ Then $\ldots$" But if you asked me *why* $\del = \frac{\eps}{3}$, or where that $3$ came from, I'd point at some scratch work and shrug.
@@ -19,6 +84,8 @@ Every symbol keeps the same color for the whole post, in the equations and in th
 - $\cL{L}$ is **green**. It's the limit you're claiming.
 - $\ca{a}$ is **purple**. It's the point $x$ is approaching.
 
+Anything with a dotted underline, like [when to stop the scratch work](#tip:when-to-stop), answers a question I had while learning this. Hover over it, or tap it on your phone.
+
 ## The definition
 
 Writing
@@ -30,7 +97,7 @@ $$
 means
 
 $$
-\forall\, \eps > 0,\ \ \exists\, \del > 0 \ \text{ such that } \ 0 < |x - \ca{a}| < \del \implies |f(x) - \cL{L}| < \eps.
+\tip{quantifier-order}{\forall\, \eps > 0,\ \ \exists\, \del > 0} \ \text{ such that } \ \tip{punctured}{0 < |x - \ca{a}|} < \del \implies |f(x) - \cL{L}| < \eps.
 $$
 
 That line used to look like noise to me. Broken into pieces, it's one sentence:
@@ -51,14 +118,14 @@ Here's one round, for $\sqrt{x}$ near $\ca{4}$. Drag the orange $\eps$ handle on
 A few things I didn't really get until I played with this:
 
 - **Smaller $\del$ never hurts.** If a window works, any narrower window works too. So you never need the *best* $\del$, just *one* that's small enough. That took a lot of pressure off.
-- **The hollow dot is on purpose.** The $0 < |x - \ca{a}|$ part of the definition means $x = \ca{a}$ itself doesn't count. Limits are about what $f$ does as it *approaches* $\ca{a}$, not what happens when it gets there.
+- **The hollow dot is on purpose.** The [$0 < |x - \ca{a}|$](#tip:punctured) part of the definition means $x = \ca{a}$ itself doesn't count. Limits are about what $f$ does as it *approaches* $\ca{a}$, not what happens when it gets there.
 - **The worse side decides.** The curve is steeper on the left of $\ca{4}$, so the left edge of the window escapes first. Your $\del$ has to work for both sides at once.
 
 ## The process: two passes in opposite directions
 
 This is the part nobody spelled out for me: **you figure out an epsilon-delta proof in the opposite order from how you write it.**
 
-1. **Scratch work, backwards.** Start with what you want, $|f(x) - \cL{L}| < \eps$, and do algebra on it until it looks like $|x - \ca{a}| < \text{something}$. That something is your $\del$.
+1. **Scratch work, backwards.** Start with what you want, $|f(x) - \cL{L}| < \eps$, and do algebra on it until it [looks like $|x - \ca{a}| < \text{something}$](#tip:when-to-stop). That something is your $\del$.
 2. **The proof, forwards.** Start from $|x - \ca{a}| < \del$ and climb back up to $|f(x) - \cL{L}| < \eps$.
 
 The scratch work never shows up in the final proof. That's exactly why finished proofs look like $\del$ was pulled out of thin air: the part where you found it got erased.
@@ -84,7 +151,7 @@ $$
 \end{aligned}
 $$
 
-The last line has exactly the shape the definition wants, so choose $\del = \frac{\eps}{3}$. Notice the color: $\cdel{\frac{\eps}{3}}$ is blue on the outside with orange inside. **$\del$ is built out of $\eps$.** That's the whole idea. Your response depends on their challenge.
+The last line has [exactly the shape the definition wants](#tip:when-to-stop), so choose [$\del = \frac{\eps}{3}$](#tip:best-delta). Notice the color: $\cdel{\frac{\eps}{3}}$ is blue on the outside with orange inside. **$\del$ is built out of $\eps$.** That's the whole idea. Your response depends on their challenge.
 
 Here's the same chain as a ladder. Scratch work reads it top to bottom. The proof reads it bottom to top.
 
@@ -92,7 +159,7 @@ Here's the same chain as a ladder. Scratch work reads it top to bottom. The proo
 
 ### The proof
 
-> Let $\eps > 0$. Choose $\del = \frac{\eps}{3}$. Suppose $0 < |x - \ca{2}| < \del$. Then
+> [Let $\eps > 0$](#tip:let-epsilon). Choose $\del = \frac{\eps}{3}$. Suppose $0 < |x - \ca{2}| < \del$. Then
 >
 > $$
 > |(3x - 1) - \cL{5}| = 3\,|x - \ca{2}| < 3\,\del = 3 \cdot \cdel{\frac{\eps}{3}} = \eps.
@@ -119,7 +186,7 @@ $$
 Same start. Factor so $|x - \ca{2}|$ shows up:
 
 $$
-|x^2 - \cL{4}| = |x - \ca{2}| \cdot \cbad{|x + 2|}.
+|x^2 - \cL{4}| = |x - \ca{2}| \cdot \tip{delta-no-x}{\cbad{|x + 2|}}.
 $$
 
 The $|x - \ca{2}|$ part is under control, since that's what $\del$ limits. The pink $\cbad{|x + 2|}$ is the problem. It changes with $x$, and $\del$ isn't allowed to depend on $x$. It can only depend on $\eps$.
@@ -128,7 +195,7 @@ My first instinct was: near $x = 2$, $|x + 2|$ is about $4$, so pick $\del = \fr
 
 {{embed:epsilon-delta-quadratic}}
 
-The fix is to put $x$ on a leash first. Promise that $\del$ will be at most $\cdel{1}$. Then
+The fix is to put $x$ on a leash first. Promise that $\del$ will be [at most $\cdel{1}$](#tip:why-one). Then
 
 $$
 |x - \ca{2}| < \cdel{1} \implies 1 < x < 3 \implies 3 < x + 2 < 5 \implies \cbad{|x + 2|} < 5.
@@ -140,12 +207,12 @@ $$
 |x^2 - \cL{4}| = |x - \ca{2}| \cdot \cbad{|x + 2|} < 5\,|x - \ca{2}|,
 $$
 
-and that's less than $\eps$ as long as $|x - \ca{2}| < \frac{\eps}{5}$.
+and that's less than $\eps$ as long as [$|x - \ca{2}| < \frac{\eps}{5}$](#tip:when-to-stop).
 
 So $\del$ has made two promises: it's at most $\cdel{1}$ (so the bound $|x + 2| < 5$ is true), and it's at most $\frac{\eps}{5}$ (so the inequality finishes). The smaller of the two keeps both promises:
 
 $$
-\del = \min\!\left(\cdel{1}, \frac{\eps}{5}\right).
+\del = \tip{why-min}{\min\!\left(\cdel{1}, \frac{\eps}{5}\right)}.
 $$
 
 That $\min$ was the single most confusing part of these proofs for me. It turns out it's not a trick at all. It's just two requirements, and you take whichever one is stricter. Go back to the graph above, switch to $\min(1, \frac{\eps}{5})$ and press play. It holds for every $\eps$. Above $\eps = 5$, the $1$ takes over and $\del$ stops growing.
@@ -154,12 +221,12 @@ That $\min$ was the single most confusing part of these proofs for me. It turns 
 
 ### The proof
 
-> Let $\eps > 0$. Choose $\del = \min\!\left(\cdel{1}, \frac{\eps}{5}\right)$, and suppose $0 < |x - \ca{2}| < \del$.
+> [Let $\eps > 0$](#tip:let-epsilon). Choose $\del = \min\!\left(\cdel{1}, \frac{\eps}{5}\right)$, and suppose $0 < |x - \ca{2}| < \del$.
 >
 > Since $\del \le \cdel{1}$, we have $|x - \ca{2}| < 1$, so $1 < x < 3$ and $|x + 2| < 5$. Since $\del \le \frac{\eps}{5}$,
 >
 > $$
-> |x^2 - \cL{4}| = |x - \ca{2}|\,|x + 2| < \del \cdot 5 \le \frac{\eps}{5} \cdot 5 = \eps.
+> |x^2 - \cL{4}| = |x - \ca{2}|\,|x + 2| \tip{mixed-inequalities}{< \del \cdot 5 \le \frac{\eps}{5} \cdot 5} = \eps.
 > $$
 >
 > So $\lim_{x \to \ca{2}} x^2 = \cL{4}$. $\blacksquare$
@@ -169,7 +236,7 @@ That $\min$ was the single most confusing part of these proofs for me. It turns 
 Seeing proofs fail helped me as much as seeing them work. To show a limit is **not** $\cL{L}$, you flip every quantifier in the definition:
 
 $$
-\exists\, \eps > 0 \ \ \forall\, \del > 0 \ \ \exists\, x: \ \ 0 < |x - \ca{a}| < \del \ \text{ and } \ |f(x) - \cL{L}| \ge \eps.
+\exists\, \eps > 0 \ \ \forall\, \del > 0 \ \ \exists\, x: \ \ 0 < |x - \ca{a}| < \del \ \text{ and } \ \tip{why-geq}{|f(x) - \cL{L}| \ge \eps}.
 $$
 
 In game terms, the skeptic only needs **one** band you can't answer. Below are two ways that happens. Pick an $\eps$ small enough and the panel tells you no $\del$ works at all.
@@ -186,7 +253,7 @@ After working through all of this, the process fits on an index card:
 1. **Write the goal:** $|f(x) - \cL{L}| < \eps$.
 2. **Factor out $|x - \ca{a}|$.** Whatever is left over either is a constant (great) or depends on $x$.
 3. **If it depends on $x$, leash it.** Assume $\del \le 1$, figure out the range of $x$ that gives you, and bound the leftover factor by a constant $\cdel{K}$.
-4. **Read off $\del$:** $\del = \min\!\left(1, \frac{\eps}{\cdel{K}}\right)$, or just $\frac{\eps}{\cdel{K}}$ if you didn't need the leash.
+4. **[Read off $\del$](#tip:when-to-stop):** $\del = \min\!\left(1, \frac{\eps}{\cdel{K}}\right)$, or just $\frac{\eps}{\cdel{K}}$ if you didn't need the leash.
 5. **Write the proof forwards:** let $\eps > 0$, choose $\del$, assume $0 < |x - \ca{a}| < \del$, and chain inequalities until you reach $< \eps$.
 
 The template was always right. I just didn't see that every line of it is one move in the game, and that the scratch work is where the real thinking happens. Writing this post, and dragging those bands around until the shapes made sense, is how I got from memorizing the process to understanding it.

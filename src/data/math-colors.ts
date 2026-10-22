@@ -20,4 +20,11 @@ export const KATEX_MACROS = {
   "\\cL": `\\textcolor{${hex(MATH_COLORS.limit)}}{#1}`,
   "\\ca": `\\textcolor{${hex(MATH_COLORS.point)}}{#1}`,
   "\\cbad": `\\textcolor{${hex(MATH_COLORS.fail)}}{#1}`,
+  "\\tip": "\\htmlData{tip=#1}{#2}",
+};
+
+// \tip{id}{...} wraps part of an equation so a post can attach a hover tip to it.
+export const KATEX_TIP_OPTIONS = {
+  trust: (context: { command: string }) => context.command === "\\htmlData",
+  strict: (code: string) => (code === "htmlExtension" ? "ignore" : "warn"),
 };

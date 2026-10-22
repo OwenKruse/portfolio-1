@@ -1,4 +1,5 @@
 import { BlogEmbed, splitEmbeds } from "@/components/blog/embeds";
+import { PostTips } from "@/components/blog/post-tips";
 import { SiteNav } from "@/components/new/site-nav";
 import { getBlogPosts, getPost } from "@/data/blog";
 import { backgroundFor } from "@/data/project-backgrounds";
@@ -113,19 +114,21 @@ export default async function BlogPost({ params }: Params) {
           </div>
         )}
 
-        <div className="mt-12">
-          {splitEmbeds(post.source).map((part, i) =>
-            part.type === "html" ? (
-              <div
-                key={i}
-                className={PROSE}
-                dangerouslySetInnerHTML={{ __html: part.html }}
-              />
-            ) : (
-              <BlogEmbed key={i} name={part.name} />
-            ),
-          )}
-        </div>
+        <PostTips tips={post.tips}>
+          <div className="mt-12">
+            {splitEmbeds(post.source).map((part, i) =>
+              part.type === "html" ? (
+                <div
+                  key={i}
+                  className={PROSE}
+                  dangerouslySetInnerHTML={{ __html: part.html }}
+                />
+              ) : (
+                <BlogEmbed key={i} name={part.name} />
+              ),
+            )}
+          </div>
+        </PostTips>
       </article>
     </main>
   );

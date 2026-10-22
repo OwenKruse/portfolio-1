@@ -251,3 +251,38 @@ code[data-line-numbers-max-digits="3"]>[data-line]::before {
 .katex {
   font-size: 1.1em;
 }
+
+/* Hover tips in blog posts: a dotted underline marks a common question */
+.tip-trigger {
+  cursor: help;
+  border-radius: 4px;
+  background-image: linear-gradient(to right, #c79a6f 45%, transparent 0);
+  background-size: 5px 1.5px;
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+  padding-bottom: 1px;
+  transition: background-color 0.15s;
+}
+
+.katex .tip-trigger {
+  display: inline-block;
+  padding: 0 2px 2px;
+}
+
+.tip-trigger:hover,
+.tip-trigger:focus-visible,
+.tip-trigger[aria-expanded="true"] {
+  background-color: rgba(246, 217, 180, 0.5);
+  outline: none;
+}
+
+.tip-card {
+  animation: tip-in 0.14s ease-out;
+}
+
+@keyframes tip-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px) scale(0.98);
+  }
+}
